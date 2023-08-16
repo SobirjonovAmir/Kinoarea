@@ -3,11 +3,11 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Qanelas";
+  transition: all 0.1s ease;
 }
 
 body {
   width: 100%;
-  height: 200vh;
   overflow-x: hidden;
   background: #1e2538;
 
@@ -31,7 +31,17 @@ body {
     background-position: center;
     background-size: cover;
     transition: 1s ease;
+    &::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(to top, #1e2538 10%, rgba(0, 0, 0, 0) 100%);
+    }
   }
+
   .bg-poster.change {
     animation: change 1s ease;
   }
@@ -177,7 +187,7 @@ body {
 }
 
 main {
-  margin-top: 50px;
+  margin-top: 35px;
 
   .in-cinema {
     &__header {
@@ -185,6 +195,8 @@ main {
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
+      margin-bottom: 60px;
+      user-select: none;
 
       &-title {
         color: #fff;
@@ -203,7 +215,7 @@ main {
           overflow-x: auto;
           display: flex;
           flex-wrap: nowrap;
-          gap: 10px;
+          gap: 5px;
           text-transform: capitalize;
           cursor: grab;
           cursor: -webkit-grab;
@@ -218,16 +230,24 @@ main {
             cursor: -webkit-grabbing;
           }
           li {
-            padding: 7px 10px;
+            min-width: max-content;
+            padding: 5px 10px;
             user-select: none;
             color: rgba(255, 255, 255, 0.35);
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             list-style: none;
-            transition: 0.4s ease;
+            transition: all 1s ease;
+            border-radius: 5px;
+
+            &.active {
+              background: #00000054;
+              color: white;
+            }
 
             &:hover {
+              background: #00000054;
               color: #fff;
             }
           }
@@ -236,16 +256,94 @@ main {
     }
 
     &__content {
+      user-select: none;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 22px;
+      transition: all 0.3s ease;
 
       .item-banner {
+        position: relative;
         border-radius: 10px;
+        overflow: hidden;
         background-size: cover;
         background-position: center;
         width: 100%;
-        height: 480px;
+        height: 430px;
+        &__bg {
+          display: none !important;
+          background: rgba(54, 87, 203, 0.65);
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          @keyframes fade-in {
+            from {
+              opacity: 0;
+            }
+            to {
+              opacity: 1;
+            }
+          }
+          @keyframes fade-out {
+            from {
+              opacity: 1;
+            }
+            to {
+              opacity: 0;
+            }
+          }
+          &.active {
+            display: flex !important;
+            animation: fade-in 500ms ease;
+          }
+          &.hide {
+            display: flex !important;
+            animation: fade-out 300ms ease;
+          }
+        }
+      }
+      .item-about {
+        z-index: 10;
+        overflow: hidden;
+        position: absolute;
+        padding: 10px 15px;
+        border-radius: 10px;
+        max-width: 200px;
+        margin: 0 10px;
+        transition: all 0.5s ease;
+        &:hover {
+          box-shadow: 0px 0px 20px 0px #ffffff80;
+        }
+        &:active {
+          scale: .95;
+        }
+        background: #fff;
+        cursor: pointer;
+
+        span {
+          color: #3657cb;
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 166.5%;
+        }
+      }
+      .item-rating {
+        z-index: 10;
+        right: 10px;
+        top: 10px;
+        position: absolute;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background: #89cb36;
+        span {
+          color: #fff;
+          font-size: 16px;
+          font-weight: 700;
+        }
       }
       .item-title {
         color: #fff;
