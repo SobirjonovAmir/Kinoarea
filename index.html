@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <div class="bg-poster" style="background-image: url(/public/defoult-bg.png)"></div>
+  <div class="bg-poster" style="background-image: url(/public/default-bg.png)"></div>
   <div class="conatiner">
     <header class="header">
       <div class="header__left">
@@ -75,18 +75,66 @@
           <div class="in-cinema__header-title">
             <h2>Сейчас в кино</h2>
           </div>
-          <div class="in-cinema__header-line">
-            <svg xmlns="http://www.w3.org/2000/svg" width="54" height="2" viewBox="0 0 54 2" fill="none">
-              <path d="M1 1H52.5" stroke="white" stroke-width="2" stroke-linecap="round" />
-            </svg>
-          </div>
+          <div class="in-cinema__header-line"></div>
           <div class="in-cinema__header-categories">
             <ul class="categories__list"></ul>
           </div>
         </div>
 
         <div class="in-cinema__content"></div>
+        <div class="button-box">
+          <button data-bool="false" class="show-button">Все новинки</button>
+        </div>
+      </section>
 
+      <section class="new-trailers">
+        <div class="new-trailers__header">
+          <div class="new-trailers__header-title">
+            <h2>Новые трейлеры</h2>
+          </div>
+          <div class="new-trailers__header-watchall">
+            <a href="#">
+              <span>Все трейлеры</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="27" height="16" viewBox="0 0 27 16" fill="none">
+                <path
+                  d="M26.7071 8.70711C27.0976 8.31658 27.0976 7.68342 26.7071 7.2929L20.3431 0.928934C19.9526 0.53841 19.3195 0.538409 18.9289 0.928934C18.5384 1.31946 18.5384 1.95262 18.9289 2.34315L24.5858 8L18.9289 13.6569C18.5384 14.0474 18.5384 14.6805 18.9289 15.0711C19.3195 15.4616 19.9526 15.4616 20.3431 15.0711L26.7071 8.70711ZM-8.74228e-08 9L26 9L26 7L8.74228e-08 7L-8.74228e-08 9Z"
+                  fill="white" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="new-trailers__content">
+          <iframe src="" frameborder="0"
+            allowfullscreen>
+          </iframe>
+          <div class="content__info">
+            <div class="content__info-left">
+              <h3 class="info__title">fdsad</h3>
+              <ul>
+                <li><a href="#"><img src="/public/vk-logo.svg" alt="vk-logo"></a></li>
+                <li><a href="#"><img src="/public/instagram-logo.svg" alt="instagram-logo"></a></li>
+                <li><a href="#"><img src="/public/facebook.svg" alt="facebook-logo"></a></li>
+                <li><a href="#"><img src="/public/twitter.svg" alt="twitter-logo"></a></li>
+              </ul>
+            </div>
+            <div class="content__info-right">
+              <div class="buttons">
+                <div class="like-button__box">
+                  <button class="like-button">
+                    <img src="/public/like.svg" alt="like">
+                  </button>
+                  <span class="likes-count">1213</span>
+                </div>
+                <div class="dislike-button__box">
+                  <button class="dislike-button">
+                    <img src="/public/dislike.svg" alt="dislike">
+                  </button>
+                  <span class="dislikes-count">12</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="content__wrapper"></div>
       </section>
     </div>
   </main>

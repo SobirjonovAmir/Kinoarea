@@ -197,8 +197,8 @@ body {
     &__promo {
       display: flex;
       align-items: flex-start;
+      justify-content: center;
       gap: 50px;
-      grid-template-columns: repeat(2, 1fr);
 
       .promo__left {
         .left__banner {
@@ -206,37 +206,109 @@ body {
           border-radius: 12px;
           object-fit: cover;
           background-size: cover;
-          width: 404px;
-          height: 559px;
+          background-repeat: no-repeat;
+          width: 365px;
+          height: 550px;
         }
       }
       .promo__right {
+        margin-top: 30px;
         .location {
           color: #4f5b7c;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 500;
           span {
+            text-shadow: 1px 1px 1px #00000050;
+
             color: #fff;
           }
         }
         .movie-title {
+          margin-top: 10px;
           color: #fff;
-          font-size: 60px;
-          font-weight: 900;
-          line-height: normal;
-          
+          font-size: 55px;
+          font-weight: 700;
+          line-height: 68px;
         }
         .movie__original-title {
-          color: #fff;
+          display: inline-block;
+          margin-top: 10px;
+          color: #ffffff;
           font-size: 18px;
           font-weight: 500;
         }
         .movie-description {
           margin-top: 20px;
-          color: #ffffffc0;
+          color: #ffffff;
           font-size: 18px;
           font-weight: 500;
-          line-height: 166.5%; /* 33.3px */
+          line-height: 166.5%;
+        }
+        .movie-bottom {
+          display: flex;
+          align-items: center;
+          gap: 30px;
+          margin-top: 30px;
+
+          a {
+            text-decoration: none;
+          }
+
+          .trailer-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            padding: 20px 35px;
+            background: none;
+            border-radius: 10px;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: all 300ms ease;
+            &:hover {
+              box-shadow: 0px 0px 20px 0px #ffffff20;
+            }
+            &:active {
+              scale: .98;
+            }
+
+            span {
+              color: #fff;
+              font-size: 18px;
+              font-weight: 700;
+            }
+          }
+
+          &__social {
+            display: flex;
+            align-items: center;
+            ul {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 25px;
+              padding: 0 1px;
+
+              li {
+                a {
+                  display: flex;
+                  align-items: center;
+                }
+                filter: grayscale(100%) brightness(100%) contrast(0%) sepia(0%);
+                transition: 0.6s ease;
+                &:hover {
+                  filter: none;
+                }
+                color: white;
+                list-style: none;
+                width: 12px;
+                &:first-child {
+                  width: 14px;
+                }
+              }
+            }
+          }
         }
       }
     }

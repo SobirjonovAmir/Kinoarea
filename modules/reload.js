@@ -1,18 +1,56 @@
-import { bg_poster, in_cinema, categories_list } from "../main"
-import { getData } from "./http";
+import { bg_poster, in_cinema, categories_list, trailers_list } from "/main.js"
+import { getData, API_KEY } from "/modules/http.js";
 
-const API_KEY = 'f1d5beaab7f191450fc1bdd4b37d1f96';
+const show_button = document.querySelector(".show-button")
+const iframe = document.querySelector("iframe")
+
+let translate = {
+	"Action": "Боевики",
+	"Adventure": "Приключения",
+	"Animation": "Мультфильм",
+	"Comedy": "Комедия",
+	"Crime": "Криминал",
+	"Documentary": "Документальный",
+	"Drama": "Драма",
+	"Family": "Семейный",
+	"Fantasy": "Фэнтези",
+	"History": "Исторический",
+	"Horror": "Ужасы",
+	"Music": "Музыкальный",
+	"Mystery": "Мистика",
+	"Romance": "Романтика",
+	"Science Fiction": "Научная фантастика",
+	"TV Movie": "Телевизионный фильм",
+	"Thriller": "Триллер",
+	"War": "Военный",
+	"Western": "Вестерн"
+}
+
+let active_genre = "all"
+let show_all = false
+let array_length = 0
+
+show_button.onclick = () => {
+	if (show_button.getAttribute("data-show") == "true") {
+		show_button.setAttribute("data-show", false)
+		show_all = false
+		show_button.textContent = "Все новинки"
+	} else {
+		show_button.textContent = "Скрыть"
+		show_button.setAttribute("data-show", true)
+		show_all = true
+	}
+
+	checkBool(active_genre)
+}
 
 getData(`/genre/movie/list?api_key=${API_KEY}`)
 	.then(res => {
 		const all = document.createElement("li")
 		all.classList.add("categories__list-item", "active")
-		all.textContent = "all"
+		all.textContent = "Все"
 		all.setAttribute("data-genre", "all")
 		categories_list.append(all)
-
-		getData(`/movie/now_playing?api_key=${API_KEY}&language=ru-RU`)
-			.then(res => reload(res.data.results.slice(0, 8), in_cinema))
 
 		const genres = res.data.genres;
 
@@ -22,7 +60,7 @@ getData(`/genre/movie/list?api_key=${API_KEY}`)
 
 			li.classList.add("categories__list-item")
 			li.setAttribute("data-genre", id)
-			li.textContent = name
+			li.textContent = translate[name] ? translate[name] : name
 
 			categories_list.append(li)
 			let all_genres = document.querySelectorAll(".categories__list-item")
@@ -31,21 +69,87 @@ getData(`/genre/movie/list?api_key=${API_KEY}`)
 					document.querySelectorAll(".categories__list-item").forEach(el => el.classList.remove("active"))
 					li.classList.add("active")
 					let key = li.getAttribute("data-genre")
-
-					if (key === "all") {
-						getData(`/movie/now_playing?api_key=${API_KEY}&language=ru-RU`)
-							.then(res => reload(res.data.results.slice(0, 8), in_cinema))
-					} else {
-						getData(`/movie/now_playing?api_key=${API_KEY}&with_genres=${+key}&language=ru-RU`)
-							.then(res => {
-								const movies = res.data.results;
-								reload(movies.slice(0, 8), in_cinema)
-							})
-					}
+					active_genre = key
+					checkBool(key)
 				}
 			})
 		});
+
+		getData(`/movie/now_playing?api_key=${API_KEY}&language=ru-RU`)
+			.then(res => {
+				reload(res.data.results.slice(0, 8), in_cinema)
+				let first_trailer = true
+				for (const item of res.data.results) {
+					getData(`/movie/${item.id}/videos?api_key=${API_KEY}`)
+						.then(trailer => {
+							if (trailer.data.results.length !== 0) {
+
+								console.log(trailer.data.results[0].key);
+								const div = document.createElement('div');
+								const thumbnailElement = document.createElement('div');
+								const thumbnailImage = document.createElement('img');
+								const titleElement = document.createElement('span');
+								const banner_bg = document.createElement("div")
+								const polygon = document.createElement("img")
+
+
+
+								div.classList.add('wrapper__item')
+								thumbnailElement.classList.add('item-thumbnail')
+								titleElement.classList.add('item-title')
+								banner_bg.classList.add("banner-bg")
+								polygon.classList.add("polygon")
+
+								polygon.src = "/public/polygon.svg"
+								thumbnailImage.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : `/public/default-poster.jpg`
+								titleElement.textContent = item.title
+
+								if (first_trailer) {
+									first_trailer = false
+									iframe.src = `https://www.youtube.com/embed/${trailer.data.results[0].key}`
+									banner_bg.classList.add('active')
+								}
+								div.onclick = () => {
+									document.querySelectorAll(".banner-bg").forEach(el => el.classList.remove("active"))
+									banner_bg.classList.add('active')
+									iframe.src = `https://www.youtube.com/embed/${trailer.data.results[0].key}`
+								}
+
+								div.append(thumbnailElement, titleElement, banner_bg);
+								thumbnailElement.append(thumbnailImage, banner_bg, polygon);
+
+								trailers_list.append(div);
+							}
+						})
+				}
+			})
 	})
+
+function checkBool(key) {
+	if (key === "all") {
+		if (show_all) {
+			getData(`/movie/now_playing?api_key=${API_KEY}&language=ru-RU`)
+				.then(res => reload(res.data.results, in_cinema))
+		} else {
+			getData(`/movie/now_playing?api_key=${API_KEY}&language=ru-RU`)
+				.then(res => reload(res.data.results.slice(0, 8), in_cinema))
+		}
+	} else {
+		if (show_all) {
+			getData(`/movie/now_playing?api_key=${API_KEY}&with_genres=${+key}&language=ru-RU`)
+				.then(res => {
+					const movies = res.data.results;
+					reload(movies, in_cinema)
+				})
+		} else {
+			getData(`/movie/now_playing?api_key=${API_KEY}&with_genres=${+key}&language=ru-RU`)
+				.then(res => {
+					const movies = res.data.results;
+					reload(movies.slice(0, 8), in_cinema)
+				})
+		}
+	}
+}
 
 export function reload(arr, place) {
 	place.innerHTML = ""
@@ -62,7 +166,7 @@ export function reload(arr, place) {
 
 		div.classList.add("content-item")
 		banner.classList.add("item-banner", "active")
-		banner_bg.classList.add("item-banner__bg")
+		banner_bg.classList.add("item-banner__bg", "active")
 		rating.classList.add("item-rating")
 		about.classList.add("item-about")
 		title.classList.add("item-title")
@@ -70,7 +174,7 @@ export function reload(arr, place) {
 
 		about_text.textContent = "Карточка фильма"
 		rating_text.textContent = (+item.vote_average).toFixed(2)
-		banner.style.backgroundImage = item.poster_path ? `url(https://image.tmdb.org/t/p/original${item.poster_path})` : `url(/public/defoult-poster.jpg)`
+		banner.style.backgroundImage = item.poster_path ? `url(https://image.tmdb.org/t/p/original${item.poster_path})` : `url(/public/default-poster.jpg)`
 		title.textContent = item.title
 		getData(`/genre/movie/list?api_key=${API_KEY}`)
 			.then(res => {
@@ -79,7 +183,7 @@ export function reload(arr, place) {
 				item.genre_ids.forEach(genre_id => {
 					const genre = genres.find(genre => genre.id === genre_id);
 					if (genre) {
-						finded.push(genre.name)
+						finded.push(translate[genre.name] ? translate[genre.name] : genre.name)
 					} else {
 						console.log(`${genre_id} не найден.`);
 					}
@@ -89,22 +193,16 @@ export function reload(arr, place) {
 
 
 		banner.onmouseenter = () => {
-			banner_bg.classList.add("active")
 			bg_poster.style.opacity = "0"
 			setTimeout(() => {
-				bg_poster.style.backgroundImage = item.backdrop_path ? `url(https://image.tmdb.org/t/p/original${item.backdrop_path})` : `url(/public/defoult-bg.png)`
+				bg_poster.style.backgroundImage = item.backdrop_path ? `url(https://image.tmdb.org/t/p/original${item.backdrop_path})` : `url(/public/default-bg.png)`
 				bg_poster.classList.add("change")
 				bg_poster.style.opacity = ".7"
 			}, 1000);
 		}
 		banner.onmouseleave = () => {
-			banner_bg.classList.add("hide")
-			setTimeout(() => {
-				banner_bg.classList.remove("hide")
-				banner_bg.classList.remove("active")
-			}, 300);
 			bg_poster.classList.remove("change")
-			bg_poster.style.backgroundImage = `url(public/defoult-bg.png)`
+			bg_poster.style.backgroundImage = `url(public/default-bg.png)`
 		}
 
 		about.onclick = () => {
@@ -119,12 +217,4 @@ export function reload(arr, place) {
 
 		place.append(div)
 	}
-	//const button_box = document.createElement("div");
-	//const show = document.createElement("button");
-	//show.classList.add("show-button");
-	//button_box.classList.add("button-box");
-	//show.textContent = "Все новинки";
-	//button_box.append(show);
-	//place.parentElement.append(button_box);
-
 }

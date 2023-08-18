@@ -7,12 +7,14 @@ export function grabScroll(container) {
 		isDown = true;
 		startX = e.pageX - container.offsetLeft;
 		scrollLeft = container.scrollLeft;
+		container.style.cursor = 'grabbing'
 	});
 	container.addEventListener('mouseleave', () => {
 		isDown = false;
 		container.classList.remove('active');
 	});
 	container.addEventListener('mouseup', () => {
+		container.style.cursor = 'grab'
 		isDown = false;
 		container.classList.remove('active');
 	});
@@ -25,3 +27,4 @@ export function grabScroll(container) {
 		container.scrollLeft = scrollLeft - walk;
 	});
 }
+
