@@ -3,6 +3,7 @@ import { getData, API_KEY } from "/modules/http.js";
 
 const show_button = document.querySelector(".show-button")
 const iframe = document.querySelector("iframe")
+const trailer_title = document.querySelector(".new-trailers__content .info__title")
 
 let translate = {
 	"Action": "Боевики",
@@ -84,15 +85,12 @@ getData(`/genre/movie/list?api_key=${API_KEY}`)
 						.then(trailer => {
 							if (trailer.data.results.length !== 0) {
 
-								console.log(trailer.data.results[0].key);
 								const div = document.createElement('div');
 								const thumbnailElement = document.createElement('div');
 								const thumbnailImage = document.createElement('img');
 								const titleElement = document.createElement('span');
 								const banner_bg = document.createElement("div")
 								const polygon = document.createElement("img")
-
-
 
 								div.classList.add('wrapper__item')
 								thumbnailElement.classList.add('item-thumbnail')
@@ -108,11 +106,13 @@ getData(`/genre/movie/list?api_key=${API_KEY}`)
 									first_trailer = false
 									iframe.src = `https://www.youtube.com/embed/${trailer.data.results[0].key}`
 									banner_bg.classList.add('active')
+									trailer_title.textContent = item.title
 								}
 								div.onclick = () => {
 									document.querySelectorAll(".banner-bg").forEach(el => el.classList.remove("active"))
 									banner_bg.classList.add('active')
 									iframe.src = `https://www.youtube.com/embed/${trailer.data.results[0].key}`
+									trailer_title.textContent = item.title
 								}
 
 								div.append(thumbnailElement, titleElement, banner_bg);
@@ -124,7 +124,6 @@ getData(`/genre/movie/list?api_key=${API_KEY}`)
 				}
 			})
 	})
-
 function checkBool(key) {
 	if (key === "all") {
 		if (show_all) {
@@ -150,6 +149,9 @@ function checkBool(key) {
 		}
 	}
 }
+
+
+
 
 export function reload(arr, place) {
 	place.innerHTML = ""
