@@ -6,66 +6,17 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/fonts/stylesheet.css">
-  <link rel="stylesheet" href="style.scss">
+  <link rel="stylesheet" href="/style.scss">
+  <link rel="stylesheet" href="scss/header.scss">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <script defer src="/modules/layout.js"></script>
   <title>Kinoarea</title>
 </head>
 
 <body>
   <div class="bg-poster" style="background-image: url(/public/default-bg.png)"></div>
   <div class="conatiner">
-    <header class="header">
-      <div class="header__left">
-        <div class="header__left-logo">
-          <a href="/">
-            <img src="/public/logo.svg" alt="Kinoarea-logo">
-          </a>
-        </div>
-        <div class="header__left-social">
-          <ul>
-            <li><a href="#"><img src="/public/vk-logo.svg" alt="vk-logo"></a></li>
-            <li><a href="#"><img src="/public/instagram-logo.svg" alt="instagram-logo"></a></li>
-            <li><a href="#"><img src="/public/facebook.svg" alt="facebook-logo"></a></li>
-            <li><a href="#"><img src="/public/twitter.svg" alt="twitter-logo"></a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="header__center">
-        <nav class="header__center-navigation">
-          <ul class="navigation__list">
-            <a href="#">
-              <li class="navigation__list-item">Афиша</li>
-            </a>
-            <a href="#">
-              <li class="navigation__list-item">Медиа</li>
-            </a>
-            <a href="#">
-              <li class="navigation__list-item">Фильмы</li>
-            </a>
-            <a href="#">
-              <li class="navigation__list-item">Актёры</li>
-            </a>
-            <a href="#">
-              <li class="navigation__list-item">Новости</li>
-            </a>
-            <a href="#">
-              <li class="navigation__list-item">Подборки</li>
-            </a>
-            <a href="#">
-              <li class="navigation__list-item">Категории</li>
-            </a>
-          </ul>
-        </nav>
-      </div>
-
-      <div class="header__right">
-        <button class="header__right-search button">
-          <img src="/public/search.svg" alt="search">
-        </button>
-        <button class="header__right-login button"><span>Войти</span></button>
-      </div>
-
-    </header>
+    <header class="header"></header>
   </div>
 
   <main>
@@ -133,7 +84,10 @@
               </div>
             </div>
           </div>
-          <div class="content__wrapper"></div>
+          <div class="content__container">
+            <div id="custom-scrollbar" class="top-scrollbar"></div>
+            <div class="content__wrapper"></div>
+          </div>
       </section>
 
       <section class="popular-movies">
@@ -143,30 +97,66 @@
           </div>
           <div class="popular-movies__header-line"></div>
           <div class="popular-movies__header-categories">
-            <ul class="categories__list"></ul>
+            <ul class="categories__list">
+              <li data-date="all">Все время</li>
+              <li data-date="2023">2023</li>
+              <li data-date="2022">2022</li>
+              <li data-date="2021">2021</li>
+              <li data-date="2020">2020</li>
+              <li data-date="2019">2019</li>
+            </ul>
           </div>
         </div>
 
 
-        <div class="swiper-container">
-          <div class="swiper-content">
-            
+        <div class="swiper">
+          <div class="swiper-wrapper">
           </div>
-          <div class="swiper-controls">
-            <button class="swiper-button prev-button">←</button>
-            <div class="swiper-counter">1 / 2</div>
-            <button class="swiper-button next-button">→</button>
-          </div>
+
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-pagination"></div>
         </div>
-
-
       </section>
+
+
+      <section class="popular-persons">
+        <div class="popular-persons__header">
+          <div class="popular-persons__header-title">
+            <h2>Популярные персоны</h2>
+          </div>
+          <div class="popular-persons__header-line"></div>
+          <div class="popular-persons__header-categories">
+            <ul class="categories__list">
+              <li data-date="year">За год</li>
+              <li data-date="month">За месяц</li>
+              <li data-date="week">За неделю</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="popular-persons__content">
+          <div class="first-place"></div>
+          <div class="first-second"></div>
+          <div class="others"></div>
+        </div>
+      </section>
+
 
     </div>
   </main>
   <footer>
     <div class="container">
+      <section class="anticipated-movies">
+        <div class="anticipated-movies__header">
+          <div class="anticipated-movies__header-title">
+            <h2>Ожидаемые новинки</h2>
+          </div>
+        </div>
 
+        <div class="anticipated-movies__content">
+        </div>
+      </section>
     </div>
   </footer>
 
@@ -175,6 +165,7 @@
   <script type="module" src="/main.js"></script>
   <script type="module" src="/modules/reload.js"></script>
   <script type="module" src="/modules/swiper.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 </body>
 
 </html>
