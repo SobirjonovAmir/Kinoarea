@@ -6,9 +6,8 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="/fonts/stylesheet.css">
-  <link rel="stylesheet" href="/style.scss">
-  <link rel="stylesheet" href="scss/header.scss">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="scss/style.scss">
+  <link rel="stylesheet" href="scss/layout.scss">
   <script defer src="/modules/layout.js"></script>
   <title>Kinoarea</title>
 </head>
@@ -113,8 +112,20 @@
           <div class="swiper-wrapper">
           </div>
 
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next">
+            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="24" viewBox="0 0 27 24" fill="none">
+              <path
+                d="M26.0607 13.0607C26.6464 12.4749 26.6464 11.5251 26.0607 10.9393L16.5147 1.3934C15.9289 0.807611 14.9792 0.807611 14.3934 1.3934C13.8076 1.97919 13.8076 2.92893 14.3934 3.51472L22.8787 12L14.3934 20.4853C13.8076 21.0711 13.8076 22.0208 14.3934 22.6066C14.9792 23.1924 15.9289 23.1924 16.5147 22.6066L26.0607 13.0607ZM0 13.5L25 13.5V10.5L0 10.5L0 13.5Z"
+                fill="white" />
+            </svg>
+          </div>
+          <div class="swiper-button-prev">
+            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="24" viewBox="0 0 27 24" fill="none">
+              <path
+                d="M0.939341 10.9393C0.353554 11.5251 0.353554 12.4749 0.939341 13.0607L10.4853 22.6066C11.0711 23.1924 12.0208 23.1924 12.6066 22.6066C13.1924 22.0208 13.1924 21.0711 12.6066 20.4853L4.12132 12L12.6066 3.51472C13.1924 2.92893 13.1924 1.97919 12.6066 1.3934C12.0208 0.807611 11.0711 0.807611 10.4853 1.3934L0.939341 10.9393ZM27 10.5L2 10.5V13.5L27 13.5V10.5Z"
+                fill="white" />
+            </svg>
+          </div>
           <div class="swiper-pagination"></div>
         </div>
       </section>
@@ -167,24 +178,6 @@
           </div>
         </div>
       </section>
-
-      <section class="mailing-list">
-        <div class="logo"></div>
-        <h3 class="mailing-list__title"></h3>
-        <p class="mailing-list__description"></p>
-        <form action="">
-          <div class="form-top">
-            <input type="text">
-            <button type="submit">Подписаться</button>
-          </div>
-          <div class="privacy">
-            <input type="checkbox">
-            <p>Соглашаюсь на условия <a href="#" class="mark">политики конфиденциальности</a></p>
-          </div>
-        </form>
-      </section>
-
-
 
     </div>
   </footer>

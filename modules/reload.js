@@ -15,10 +15,10 @@ let array_length = 0
 
 
 show_button.onclick = () => {
+	let productsSectionRect = in_cinema.getBoundingClientRect();
 	if (show_button.getAttribute("data-show") == "true") {
 		show_button.setAttribute("data-show", false)
 		show_all = false
-		let productsSectionRect = in_cinema.getBoundingClientRect();
 		let scrollToY = window.scrollY + productsSectionRect.top + 500;
 		
 		setTimeout(() => {
@@ -32,8 +32,6 @@ show_button.onclick = () => {
 	} else {
 		show_button.setAttribute("data-show", true)
 		show_all = true
-		let productsSectionRect = in_cinema.getBoundingClientRect();
-		console.log(productsSectionRect.bottom);
 		let scrollToY = window.scrollY + productsSectionRect.bottom + 1400;
 		
 		setTimeout(() => {
