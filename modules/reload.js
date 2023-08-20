@@ -1,5 +1,7 @@
 import { bg_poster, in_cinema, categories_list, trailers_list } from "/main.js"
 import { getData, API_KEY } from "/modules/http.js";
+import { format, parseISO } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 const show_button = document.querySelector(".show-button")
 const iframe = document.querySelector("iframe")
@@ -14,28 +16,34 @@ let array_length = 0
 
 show_button.onclick = () => {
 	if (show_button.getAttribute("data-show") == "true") {
-		show_button.textContent = "Все новинки"
 		show_button.setAttribute("data-show", false)
 		show_all = false
 		let productsSectionRect = in_cinema.getBoundingClientRect();
 		let scrollToY = window.scrollY + productsSectionRect.top + 500;
+		
+		setTimeout(() => {
+			show_button.textContent = "Все новинки"
+			window.scrollTo({
+				top: scrollToY,
+				behavior: "smooth"
+			});
+		}, 10);
 
-		window.scrollTo({
-			top: scrollToY,
-			behavior: "smooth"
-		});
 	} else {
-		show_button.textContent = "Скрыть"
 		show_button.setAttribute("data-show", true)
 		show_all = true
-
 		let productsSectionRect = in_cinema.getBoundingClientRect();
 		console.log(productsSectionRect.bottom);
 		let scrollToY = window.scrollY + productsSectionRect.bottom + 1400;
-		window.scrollTo({
-			top: scrollToY,
-			behavior: "smooth"
-		});
+		
+		setTimeout(() => {
+			show_button.textContent = "Скрыть"
+			window.scrollTo({
+				top: scrollToY,
+				behavior: "smooth"
+			});
+		}, 200);
+		
 	}
 
 	checkBool(active_genre)
@@ -125,7 +133,7 @@ getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
 
 
 
-export function reload(arr, place) {
+export function reload(arr, place, bool) {
 	place.innerHTML = ""
 	for (const item of arr) {
 		const div = document.createElement("div")
@@ -151,21 +159,31 @@ export function reload(arr, place) {
 		banner.style.backgroundImage = item.poster_path ? `url(https://image.tmdb.org/t/p/original${item.poster_path})` : `url(/public/default-poster.jpg)`
 		title.textContent = item.title
 		title.title = item.title
-		getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
-			.then(res => {
-				let genres = res.data.genres;
-				let finded = []
-				item.genre_ids.forEach(genre_id => {
-					const genre = genres.find(genre => genre.id === genre_id);
-					if (genre) {
-						finded.push(genre.name)
-					} else {
-						console.log(`${genre_id} не найден.`);
-					}
+
+
+		if (bool) {
+			const releaseDate = parseISO(item.release_date);
+			const formattedDate = format(releaseDate, 'd MMMM yyyy', { locale: ru });
+
+			subtitle.textContent = `${formattedDate} в России`
+		} else {
+			getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
+				.then(res => {
+					let genres = res.data.genres;
+					let finded = []
+					item.genre_ids.forEach(genre_id => {
+						const genre = genres.find(genre => genre.id === genre_id);
+						if (genre) {
+							finded.push(genre.name)
+						} else {
+							console.log(`${genre_id} не найден.`);
+						}
+					})
+					subtitle.innerHTML = finded.join(", ")
+					subtitle.title = finded.join(", ")
 				})
-				subtitle.innerHTML = finded.join(", ")
-				subtitle.title = finded.join(", ")
-			})
+		}
+
 
 		banner.onmouseenter = () => {
 			bg_poster.style.opacity = "0"
@@ -185,7 +203,11 @@ export function reload(arr, place) {
 		}
 
 		div.append(banner, title, subtitle)
-		banner.append(rating, banner_bg)
+		if (bool) {
+			banner.append(banner_bg)
+		} else {
+			banner.append(rating, banner_bg)
+		}
 		banner_bg.append(about)
 		about.append(about_text)
 		rating.append(rating_text)
@@ -220,4 +242,13 @@ function checkBool(key) {
 				.then(res => { reload(res.data.results.slice(0, 8), in_cinema) })
 		}
 	}
+}
+
+
+
+
+
+
+function reload_popular_persons(place) {
+
 }

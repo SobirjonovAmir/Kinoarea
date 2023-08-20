@@ -25,8 +25,6 @@ body {
 
 .bg-poster {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
@@ -36,6 +34,8 @@ body {
   &::before {
     content: "";
     position: absolute;
+    top: 0;
+    right: 0;
     bottom: 0;
     left: 0;
     width: 100vw;
@@ -256,7 +256,7 @@ main {
       font-size: 16px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.5s ease;
+      transition: 0.5s ease;
       &:hover {
         background: #fff;
         color: black;
@@ -834,6 +834,8 @@ main {
   margin-bottom: 50px;
 }
 
+//!----------------------------------------------------------------------------------------
+
 footer {
   padding: 50px 0;
   width: 100%;
@@ -859,6 +861,156 @@ footer {
       font-size: 30px;
       font-weight: 900;
       line-height: 50px;
+    }
+  }
+
+  .swiper {
+    user-select: none;
+    width: 100%;
+    padding-top: 16px;
+
+    .swiper-wrapper {
+      display: flex;
+      height: 460px;
+    }
+    .swiper-button-disabled {
+      opacity: 0;
+    }
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      color: #fff;
+    }
+    .swiper-slide {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+
+      position: relative;
+      overflow: hidden;
+
+      max-width: 285px;
+      margin-right: 20px;
+
+      .item-rating {
+        z-index: 10;
+        right: 10px;
+        top: 10px;
+        position: absolute;
+        padding: 5px 10px;
+        border-radius: 5px;
+        background: #89cb36;
+        span {
+          color: #fff;
+          font-size: 16px;
+          font-weight: 700;
+        }
+      }
+      .item-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        margin-top: 5px;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .item-subtitle {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-top: 3px;
+        display: block;
+        color: #f2f60f;
+        font-size: 12px;
+        font-weight: 400;
+      }
+
+      .item-banner {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+        width: 100%;
+        height: 430px;
+        transition: animation 700ms ease;
+        &:hover .item-banner__bg {
+          animation: fade-in 700ms ease-in;
+          opacity: 1;
+          visibility: visible;
+          transition-delay: opacity 0.4s;
+        }
+        animation: fade-in 700ms ease-in;
+
+        &:hover .item-banner__bg {
+          animation: fade-in 700ms ease-in;
+          opacity: 1;
+          visibility: visible;
+          transition-delay: opacity 0.4s;
+        }
+        &__bg {
+          overflow: hidden;
+          background: rgba(54, 87, 203, 0.6);
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.6s, visibility 0.5s;
+
+          &:hover .item-about {
+            animation: fade-in 1000ms ease-out;
+            transition-delay: all 0.4s;
+            visibility: visible;
+          }
+        }
+        .item-about {
+          visibility: hidden;
+          z-index: 10;
+          overflow: hidden;
+          padding: 10px 15px;
+          border-radius: 10px;
+          transition: all 1s ease;
+          &:hover {
+            box-shadow: 0px 0px 20px 0px #ffffff80;
+          }
+          &:active {
+            scale: 0.95;
+          }
+          background: #fff;
+          cursor: pointer;
+
+          span {
+            color: #3657cb;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 166.5%;
+          }
+        }
+      }
+    }
+
+    .swiper-pagination {
+      position: absolute;
+      top: -5px;
+      bottom: auto;
+    }
+    .swiper-pagination-bullet {
+      background: #000000;
+      outline: 1px solid rgba(255, 255, 255, 0.5);
+      opacity: 1;
+    }
+    .swiper-pagination-bullet-active {
+      width: 10px;
+      height: 10px;
+      background-color: #ffffffe1;
+      border-radius: 50%;
+      margin: 0 5px;
+      cursor: pointer;
     }
   }
 }
