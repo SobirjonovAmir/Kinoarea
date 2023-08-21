@@ -6,10 +6,14 @@
 }
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff10 #00000020;
 }
 body {
   overflow-x: hidden;
   background: #1e2538;
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff10 #00000020;
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -69,6 +73,8 @@ main {
   margin-top: 40px;
 }
 
+//!----------------------------------------------------------------------------------------
+
 .in-cinema {
   min-height: 90vh;
   &__header {
@@ -106,6 +112,7 @@ main {
         cursor: grab;
         cursor: -webkit-grab;
         border-radius: 5px;
+        scrollbar-width: none;
 
         &::-webkit-scrollbar {
           height: 0;
@@ -836,6 +843,147 @@ main {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
     gap: 20px;
+
+    .big-block {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      padding: 25px 25px;
+
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+
+      transition: all 0.5s ease;
+
+      &:hover {
+        opacity: .7;
+      }
+
+      .ranking-place {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        color: #ff0;
+        font-size: 15px;
+      }
+      .person-name {
+        z-index: 22;
+        color: #fff;
+        font-size: 27px;
+        font-weight: 700;
+      }
+      .original-name {
+        z-index: 22;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .person-age {
+        z-index: 22;
+        margin-top: 5px;
+        z-index: 22;
+        color: #f2f60f;
+        font-size: 15px;
+        font-weight: 500;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        opacity: 0.3;
+        background: #00000090;
+      }
+
+      &::after {
+        z-index: 14;
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background: linear-gradient(
+          0deg,
+          #0000004f 0%,
+          rgba(0, 0, 0, 0) 55.56%
+        );
+      }
+    }
+    .others {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      overflow: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px 15px;
+        position: relative;
+        border-bottom: 1px solid #21293f;
+        transition: .1s ease-out;
+        cursor: pointer;
+
+        &:hover {
+          background: #1e2538;
+        }
+
+        .ranking-place {
+          position: absolute;
+          right: 10px;
+          top: 50%;
+          translate: 0 -50%;
+          color: #f2f60f;
+          font-size: 15px;
+          font-weight: 600;
+        }
+
+        h3 {
+          color: #fff;
+          font-size: 18px;
+          font-weight: 700;
+        }
+        h4 {
+          color: #3b486b;
+          font-size: 15px;
+          font-weight: 600;
+        }
+        .person-age {
+          color: #f2f60f;
+          font-size: 14px;
+          font-weight: 400;
+        }
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background-color: #ffffff10;
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: #00000020;
+      }
+    }
+
     div {
       height: 400px;
       border-radius: 10px;
@@ -844,9 +992,6 @@ main {
   }
   margin-bottom: 50px;
 }
-
-//!----------------------------------------------------------------------------------------
-
 
 //!----------------------------------------------------------------------------------------
 
@@ -1025,9 +1170,6 @@ main {
 }
 
 //!----------------------------------------------------------------------------------------
-
-
-
 
 @keyframes fade-in {
   from {

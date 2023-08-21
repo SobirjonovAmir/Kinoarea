@@ -112,7 +112,7 @@ function reloadHeader(place) {
 }
 
 
-//! секция для E-mail рассылки футера
+//! секция для E-mail рассылки
 const mailingSection = document.createElement('section');
 const mailingLogo = document.createElement('div');
 const mailingLogoImage = document.createElement('img');
@@ -137,6 +137,10 @@ privacyDiv.className = 'privacy';
 privacyLabel.className = 'custom-checkbox';
 checkboxSpan.className = 'checkmark';
 
+emailInput.autocomplete = "email"
+privacyCheckbox.autocomplete = "off"
+privacyCheckbox.name = "checkbox"
+mailingForm.name = "mailing_form"
 mailingForm.action = '';
 mailingLogoImage.src = '/public/mailing-logo.svg';
 mailingLogoImage.alt = 'Kinoarea';
@@ -158,8 +162,6 @@ mailingForm.append(formTop, privacyDiv);
 mailingSection.append(mailingLogo, mailingTitle, mailingDescription, mailingForm);
 
 footer.append(mailingSection);
-
-
 
 
 //! секция для навигации футера
@@ -224,3 +226,33 @@ footerNavBottom.append(copyrightText, privacyLink);
 footerNavigationSection.append(footerNavTop, footerNavCenter, footerNavBottom);
 
 footer.append(footerNavigationSection);
+
+
+
+
+const form = document.querySelector('form');
+const formInput = form.querySelector('input[type="email"]');
+const formCheckbox = form.querySelector('.privacy input[type="checkbox"]');
+const submitButton = form.querySelector('button[type="submit"]');
+
+form.onsubmit = (event) => {
+	event.preventDefault();
+	let data = {}
+
+	if (formInput.value == "") {
+		formInput.style.borderBottom = "1.2px solid red"
+		return
+	}
+	formInput.style.border = "none"
+	document.querySelector("form .checkmark").style.background = "#ccc"
+
+	if (formCheckbox.checked) {
+
+		data.email = formInput.value
+		console.log(data)
+
+		form.reset()
+	} else {
+		document.querySelector("form .checkmark").style.background = "red"
+	}
+};

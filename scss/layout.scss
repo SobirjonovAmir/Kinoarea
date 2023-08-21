@@ -101,6 +101,7 @@
       &:hover {
         box-shadow: 0px 0px 15px 0px rgba(72, 113, 255, 0.6);
       }
+      transition: all 0.5s ease;
 
       padding: 0 40px;
       height: 40px;
@@ -184,10 +185,9 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: 0.5s ease;
       input[type="email"] {
+        transition: all 0.2s ease;
         width: 400px;
-        flex-shrink: 0;
         border-radius: 10px;
         background: #fff;
         padding: 10px 25px;
@@ -205,6 +205,7 @@
         background: #f2f60f;
         padding: 14px 30px;
         border: none;
+        outline: none;
         cursor: pointer;
         &:hover {
           background: #d3d60e;

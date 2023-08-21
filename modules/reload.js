@@ -1,12 +1,18 @@
 import { bg_poster, in_cinema, categories_list, trailers_list } from "/main.js"
+import { calculateAge, getAgeString, findRussianName } from "./helper";
 import { getData, API_KEY } from "/modules/http.js";
 import { format, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 
+let first_place = document.querySelector(".popular-persons__content .first-place")
+let second_place = document.querySelector(".popular-persons__content .second-place")
+let persons_others = document.querySelector(".popular-persons__content .others")
+let popular_persons_nav = document.querySelectorAll(".popular-persons .categories__list li")
 const show_button = document.querySelector(".show-button")
 const iframe = document.querySelector("iframe")
 const trailer_title = document.querySelector(".new-trailers__content .info__title")
 const currentYear = new Date().getFullYear();
+
 
 let active_genre = "all"
 let show_all = false
@@ -20,7 +26,7 @@ show_button.onclick = () => {
 		show_button.setAttribute("data-show", false)
 		show_all = false
 		let scrollToY = window.scrollY + productsSectionRect.top + 500;
-		
+
 		setTimeout(() => {
 			show_button.textContent = "Все новинки"
 			window.scrollTo({
@@ -33,7 +39,7 @@ show_button.onclick = () => {
 		show_button.setAttribute("data-show", true)
 		show_all = true
 		let scrollToY = window.scrollY + productsSectionRect.bottom + 1400;
-		
+
 		setTimeout(() => {
 			show_button.textContent = "Скрыть"
 			window.scrollTo({
@@ -41,7 +47,7 @@ show_button.onclick = () => {
 				behavior: "smooth"
 			});
 		}, 200);
-		
+
 	}
 
 	checkBool(active_genre)
@@ -244,9 +250,61 @@ function checkBool(key) {
 
 
 
+popular_persons_nav.forEach(button => {
+	popular_persons_nav[0].classList.add("active")
+	button.onclick = () => {
+		popular_persons_nav.forEach(el => el.classList.remove("active"))
+		button.classList.add("active")
+		let key = button.getAttribute("data-date")
+		reloadPersons(key)
+	}
+})
 
+reloadPersons("week")
+function reloadPersons(key) {
+	getData(`/trending/person/${key}?api_key=${API_KEY}&language=ru-RU`)
+		.then(res => {
+			console.log(res.data.results);
+			let popular = res.data.results
+			first_place.innerHTML = ""
+			second_place.innerHTML = ""
+			persons_others.innerHTML = ""
+			for (let i = 0; i < popular.length; i++) {
+				const person = popular[i];
 
+				getData(`/person/${person.id}?api_key=${API_KEY}&language=ru-RU`)
+					.then(res => {
+						let element = res.data
+						const div = document.createElement('div');
+						const rankingPlace = document.createElement('span');
+						const personName = document.createElement('h3');
+						const originalName = document.createElement('h4');
+						const personAge = document.createElement('span');
 
-function reload_popular_persons(place) {
+						rankingPlace.className = 'ranking-place';
+						personName.className = 'person-name';
+						originalName.className = 'original-name';
+						personAge.className = 'person-age';
 
+						rankingPlace.textContent = `${i + 1}-е место`
+						personName.textContent = findRussianName(element.also_known_as) ? findRussianName(element.also_known_as) : element.name
+						originalName.textContent = element.name;
+						personAge.textContent = getAgeString(calculateAge(element.birthday))
+
+						if (i === 0) {
+							first_place.append(rankingPlace, personName, originalName, personAge);
+							first_place.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${element.profile_path})`
+						} else if (i === 1) {
+							second_place.append(rankingPlace, personName, originalName, personAge);
+							second_place.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${element.profile_path})`
+						} else {
+							div.append(rankingPlace, personName, originalName, personAge)
+							persons_others.append(div);
+						}
+
+					})
+			}
+		})
 }
+
+
