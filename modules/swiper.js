@@ -21,6 +21,7 @@ function reloadSwiper() {
 		slidesPerView: 4,
 		slidesPerGroup: 4,
 		spaceBetween: 20,
+		direction: 'horizontal',
 		grabCursor: true,
 		touchRatio: 1,
 		navigation: {
@@ -41,7 +42,7 @@ function reloadSwiper() {
 				spaceBetween: 15,
 			},
 			1024: {
-				slidesPerView: 3,
+				slidesPerView: 4,
 				spaceBetween: 20,
 			},
 			1440: {

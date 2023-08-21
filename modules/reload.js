@@ -188,7 +188,6 @@ export function reload(arr, place, bool) {
 				})
 		}
 
-
 		banner.onmouseenter = () => {
 			bg_poster.style.opacity = "0"
 			setTimeout(() => {
@@ -264,14 +263,12 @@ reloadPersons("week")
 function reloadPersons(key) {
 	getData(`/trending/person/${key}?api_key=${API_KEY}&language=ru-RU`)
 		.then(res => {
-			console.log(res.data.results);
 			let popular = res.data.results
 			first_place.innerHTML = ""
 			second_place.innerHTML = ""
 			persons_others.innerHTML = ""
 			for (let i = 0; i < popular.length; i++) {
 				const person = popular[i];
-
 				getData(`/person/${person.id}?api_key=${API_KEY}&language=ru-RU`)
 					.then(res => {
 						let element = res.data
@@ -292,16 +289,18 @@ function reloadPersons(key) {
 						personAge.textContent = getAgeString(calculateAge(element.birthday))
 
 						if (i === 0) {
+							first_place.onclick = () => window.open("/pages/about-actor/?id=" + element.id, '_blank')
 							first_place.append(rankingPlace, personName, originalName, personAge);
 							first_place.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${element.profile_path})`
 						} else if (i === 1) {
+							second_place.onclick = () => window.open("/pages/about-actor/?id=" + element.id, '_blank')
 							second_place.append(rankingPlace, personName, originalName, personAge);
 							second_place.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${element.profile_path})`
-						} else {
-							div.append(rankingPlace, personName, originalName, personAge)
+						} else if (i > 1) {
+							div.onclick = () => window.open("/pages/about-actor/?id=" + element.id, '_blank')
 							persons_others.append(div);
+							div.append(rankingPlace, personName, originalName, personAge)
 						}
-
 					})
 			}
 		})

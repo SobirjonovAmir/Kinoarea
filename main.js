@@ -6,9 +6,11 @@ export const trailers_list = document.querySelector('.content__wrapper');
 export const in_cinema = document.querySelector('.in-cinema__content');
 export const bg_poster = document.querySelector('.bg-poster');
 
-
-grabScroll(trailers_list)
-grabScroll(categories_list)
+if (trailers_list) {
+	grabScroll(trailers_list)
+	grabScroll(categories_list)
+	
+}
 
 
 
