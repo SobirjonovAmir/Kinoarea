@@ -19,38 +19,39 @@ let show_all = false
 let array_length = 0
 
 
-
-show_button.onclick = () => {
-	let productsSectionRect = in_cinema.getBoundingClientRect();
-	if (show_button.getAttribute("data-show") == "true") {
-		show_button.setAttribute("data-show", false)
-		show_all = false
-		let scrollToY = window.scrollY + productsSectionRect.top + 500;
-
-		setTimeout(() => {
-			show_button.textContent = "Все новинки"
-			window.scrollTo({
-				top: scrollToY,
-				behavior: "smooth"
-			});
-		}, 10);
-
-	} else {
-		show_button.setAttribute("data-show", true)
-		show_all = true
-		let scrollToY = window.scrollY + productsSectionRect.bottom + 1400;
-
-		setTimeout(() => {
-			show_button.textContent = "Скрыть"
-			window.scrollTo({
-				top: scrollToY,
-				behavior: "smooth"
-			});
-		}, 200);
-
+if (show_button) {
+	show_button.onclick = () => {
+		let productsSectionRect = in_cinema.getBoundingClientRect();
+		if (show_button.getAttribute("data-show") == "true") {
+			show_button.setAttribute("data-show", false)
+			show_all = false
+			let scrollToY = window.scrollY + productsSectionRect.top + 500;
+	
+			setTimeout(() => {
+				show_button.textContent = "Все новинки"
+				window.scrollTo({
+					top: scrollToY,
+					behavior: "smooth"
+				});
+			}, 10);
+	
+		} else {
+			show_button.setAttribute("data-show", true)
+			show_all = true
+			let scrollToY = window.scrollY + productsSectionRect.bottom + 1400;
+	
+			setTimeout(() => {
+				show_button.textContent = "Скрыть"
+				window.scrollTo({
+					top: scrollToY,
+					behavior: "smooth"
+				});
+			}, 200);
+	
+		}
+	
+		checkBool(active_genre)
 	}
-
-	checkBool(active_genre)
 }
 
 getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
@@ -108,7 +109,7 @@ getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
 								polygon.classList.add("polygon")
 
 								polygon.src = "/public/polygon.svg"
-								thumbnailImage.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : `/public/default-poster.jpg`
+								thumbnailImage.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.backdrop_path}` : `/public/default-poster.svg`
 								titleElement.textContent = item.title
 
 								if (first_trailer) {
@@ -160,7 +161,7 @@ export function reload(arr, place, bool) {
 
 		about_text.textContent = "Карточка фильма"
 		rating_text.textContent = (+item.vote_average).toFixed(2)
-		banner.style.backgroundImage = item.poster_path ? `url(https://image.tmdb.org/t/p/original${item.poster_path})` : `url(/public/default-poster.jpg)`
+		banner.style.backgroundImage = item.poster_path ? `url(https://image.tmdb.org/t/p/original${item.poster_path})` : `url(/public/default-poster.svg)`
 		title.textContent = item.title
 		title.title = item.title
 
@@ -296,7 +297,7 @@ function reloadPersons(key) {
 							second_place.onclick = () => window.open("/pages/about-actor/?id=" + element.id, '_blank')
 							second_place.append(rankingPlace, personName, originalName, personAge);
 							second_place.style.backgroundImage = `url(https://image.tmdb.org/t/p/original${element.profile_path})`
-						} else if (i > 1) {
+						} else if (i === i) {
 							div.onclick = () => window.open("/pages/about-actor/?id=" + element.id, '_blank')
 							persons_others.append(div);
 							div.append(rankingPlace, personName, originalName, personAge)
@@ -305,5 +306,4 @@ function reloadPersons(key) {
 			}
 		})
 }
-
 

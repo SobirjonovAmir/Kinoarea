@@ -26,7 +26,9 @@ const birthday = document.querySelector('.information-list .birthday');
 const birth_place = document.querySelector('.information-list .birth-place');
 const homepage = document.querySelector('.information-list .homepage');
 const known_for = document.querySelector('.information-list .known-for');
-const movie_descripton = document.querySelector('.movie-description');
+const movie_descripton = document.querySelector('.biography');
+const add_to_favourite = document.querySelector('.add-to-favourite');
+const favourite_count = document.querySelector('#favourite-count');
 
 const anticipated_swiper = document.querySelector(".anticipated-movies__content .swiper")
 const anticipated_swiper_container = document.querySelector(".anticipated-movies__content .swiper-wrapper")
@@ -42,13 +44,14 @@ getData(`/person/${personID}?api_key=${API_KEY}&language=ru-RU&append_to_respons
 		movie_title.textContent = findRussianName(person.also_known_as) ? findRussianName(person.also_known_as) : person.name
 		movie_location.textContent = findRussianName(person.also_known_as) ? findRussianName(person.also_known_as) : person.name
 		movie_original_title.textContent = person.name
-		movie_descripton.innerHTML = person.biography? person.biography.slice(0, 500) + "..." : "Биография отсутствует"
+		movie_descripton.innerHTML = person.biography ? person.biography : "Биография отсутствует"
 		const releaseDate = parseISO(person.birthday);
 		const formattedDate = format(releaseDate, 'd MMMM yyyy', { locale: ru });
 		birthday.innerHTML = `${formattedDate} (${getAgeString(currentYear - releaseDate.getFullYear())}) `
 		homepage.innerHTML = person.homepage ? `<a target="_blank" href='${person.homepage}'>${person.homepage}</a>` : "-"
 		birth_place.innerHTML = person.place_of_birth
 		known_for.innerHTML = person.known_for_department
+		favourite_count.innerHTML = person.popularity.toFixed(0)
 		person.images.profiles.forEach(element => {
 			//console.log(`url(https://image.tmdb.org/t/p/original${element.file_path})`);
 		});
@@ -74,7 +77,7 @@ getData(`/person/${personID}/movie_credits?api_key=${API_KEY}&language=ru-RU`)
 			},
 			pagination: {
 				el: ".swiper-pagination",
-				type: "fraction",
+				clickable: true,
 			},
 			breakpoints: {
 				360: {
@@ -189,3 +192,13 @@ swipe_btns.forEach(el => {
 
 	}
 })
+
+add_to_favourite.onclick = () => {
+	if (add_to_favourite.classList.contains("active")) {
+		add_to_favourite.classList.remove("active")
+		favourite_count.innerHTML--
+	} else {
+		add_to_favourite.classList.add("active")
+		favourite_count.innerHTML++
+	}
+}

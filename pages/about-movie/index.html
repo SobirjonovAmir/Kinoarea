@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="style.scss">
 	<link rel="stylesheet" href="/scss/layout.scss">
 	<script defer src="/modules/layout.js"></script>
-	<title id="page-title"></title>
+	<title class="movie-name"></title>
 </head>
 
 <body>
@@ -26,23 +26,27 @@
 						<div class="left__banner"></div>
 					</div>
 					<div class="promo__right">
-						<p class="location">Главная <span> <svg xmlns="http://www.w3.org/2000/svg" width="6" height="9"
-									viewBox="0 0 6 9" fill="none">
-									<path d="M1 1L5 4.38304L1.05501 8" stroke="#4F5B7C" stroke-linecap="round"
-										stroke-linejoin="round" />
-								</svg> </span> Фильмы <span> <svg xmlns="http://www.w3.org/2000/svg" width="6" height="9"
-									viewBox="0 0 6 9" fill="none">
-									<path d="M1 1L5 4.38304L1.05501 8" stroke="#4F5B7C" stroke-linecap="round"
-										stroke-linejoin="round" />
-								</svg> </span> <span id="movie-name"></span></p>
-						<h2 class="movie-title"></h2>
+						<p class="location">Главная &rsaquo; </span> Фильмы &rsaquo; <span> </span> <span
+								class="movie-name"></span></p>
+						<h2 class="movie-title movie-name"></h2>
 						<span class="movie__original-title"></span>
 						<div class="charts-box">
-
+							<div class="chart kinopoisk">
+								<canvas id="kinopoisk"></canvas>
+								<div class="canvas-bg"></div>
+								<span>Kinoarea</span>
+								<span class="rating">--</span>
+							</div>
+							<div class="chart imdb">
+								<canvas id="imdb"></canvas>
+								<div class="canvas-bg"></div>
+								<span>IMDb</span>
+								<span class="rating">--</span>
+							</div>
 						</div>
 						<p class="movie-description"></p>
 						<div class="movie-bottom">
-							<a href="#">
+							<a href="#trailer">
 								<button class="trailer-button">
 									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
 										fill="none">
@@ -62,22 +66,189 @@
 							</a>
 							<div class="movie-bottom__social">
 								<ul>
-									<li><a href="#"><img src="/public/vk-logo.svg" alt="vk-logo"></a></li>
-									<li><a href="#"><img src="/public/instagram-logo.svg" alt="instagram-logo"></a></li>
-									<li><a href="#"><img src="/public/facebook.svg" alt="facebook-logo"></a></li>
-									<li><a href="#"><img src="/public/twitter.svg" alt="twitter-logo"></a></li>
+									<li><a href="#"><img src="/vk-logo.svg" alt="vk-logo"></a></li>
+									<li><a href="#"><img src="/instagram-logo.svg" alt="instagram-logo"></a></li>
+									<li><a href="#"><img src="/facebook.svg" alt="facebook-logo"></a></li>
+									<li><a href="#"><img src="/twitter.svg" alt="twitter-logo"></a></li>
 								</ul>
 							</div>
 						</div>
 					</div>
-
 				</div>
-				<div class="about-movie__footer"></div>
+				<div class="about-movie__footer">
+					<div class="buttons">
+						<button class="like-button">
+							<img src="/like.svg" alt="like">
+						</button>
+						<button class="dislike-button">
+							<img src="/dislike.svg" alt="dislike">
+						</button>
+					</div>
+					<div class="range-rating">
+						<p>Рейтинг ожиданий 85%</p>
+						<div class="fill">
+						</div>
+					</div>
+					<div class="favourite">
+						<button class="add-to-favourite">
+							<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25">
+								<g clip-path="url(#clip0_1_21092)">
+									<path
+										d="M22.1816 3.44574C20.9365 2.09532 19.2281 1.35156 17.3706 1.35156C15.9822 1.35156 14.7107 1.79051 13.5913 2.65611C13.0265 3.09304 12.5147 3.6276 12.0634 4.25152C11.6124 3.62778 11.1004 3.09304 10.5353 2.65611C9.41614 1.79051 8.14462 1.35156 6.75621 1.35156C4.89876 1.35156 3.19012 2.09532 1.94503 3.44574C0.7148 4.78039 0.0371094 6.60371 0.0371094 8.58008C0.0371094 10.6143 0.795176 12.4763 2.4227 14.4402C3.87864 16.1969 5.97117 17.9802 8.39438 20.0452C9.22181 20.7504 10.1597 21.5498 11.1336 22.4013C11.3909 22.6266 11.721 22.7507 12.0634 22.7507C12.4057 22.7507 12.736 22.6266 12.9929 22.4016C13.9667 21.55 14.9052 20.7502 15.733 20.0447C18.1558 17.98 20.2484 16.1969 21.7043 14.44C23.3318 12.4763 24.0897 10.6143 24.0897 8.57989C24.0897 6.60371 23.412 4.78039 22.1816 3.44574Z" />
+								</g>
+								<defs>
+									<clipPath id="clip0_1_21092">
+										<rect width="24.0526" height="24.0526" transform="translate(0.0371094 0.0371094)" />
+									</clipPath>
+								</defs>
+							</svg>
+						</button>
+						<p>В избранном у <span id="favourite-count">0</span> человек</p>
+					</div>
+				</div>
 			</section>
 
+			<section class="movie-information">
+				<div class="information__wrapper">
+					<ul class="wrapper__list">
+					</ul>
+				</div>
+			</section>
+
+			<section class="producer">
+
+			</section>
 
 		</div>
+
+		<section class="starring">
+			<div class="starring__header">
+				<h2>В главных ролях:</h2>
+				<div class="all-starring">
+					<span>Все актёры</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="27" height="16" viewBox="0 0 27 16" fill="none">
+						<path
+							d="M26.7071 8.70711C27.0976 8.31658 27.0976 7.68342 26.7071 7.2929L20.3431 0.928934C19.9526 0.53841 19.3195 0.538409 18.9289 0.928934C18.5384 1.31946 18.5384 1.95262 18.9289 2.34315L24.5858 8L18.9289 13.6569C18.5384 14.0474 18.5384 14.6805 18.9289 15.0711C19.3195 15.4616 19.9526 15.4616 20.3431 15.0711L26.7071 8.70711ZM-8.74228e-08 9L26 9L26 7L8.74228e-08 7L-8.74228e-08 9Z"
+							fill="white" />
+					</svg>
+				</div>
+			</div>
+			<div class="starring__content"></div>
+		</section>
+
+		<section id="trailer" class="new-trailers">
+			<div class="new-trailers__header">
+				<div class="new-trailers__header-title">
+					<h2>Трейлер фильма</h2>
+				</div>
+				<div class="new-trailers__header-watchall">
+					<a href="#">
+						<span>Все трейлеры</span>
+						<svg xmlns="http://www.w3.org/2000/svg" width="27" height="16" viewBox="0 0 27 16" fill="none">
+							<path
+								d="M26.7071 8.70711C27.0976 8.31658 27.0976 7.68342 26.7071 7.2929L20.3431 0.928934C19.9526 0.53841 19.3195 0.538409 18.9289 0.928934C18.5384 1.31946 18.5384 1.95262 18.9289 2.34315L24.5858 8L18.9289 13.6569C18.5384 14.0474 18.5384 14.6805 18.9289 15.0711C19.3195 15.4616 19.9526 15.4616 20.3431 15.0711L26.7071 8.70711ZM-8.74228e-08 9L26 9L26 7L8.74228e-08 7L-8.74228e-08 9Z"
+								fill="white" />
+						</svg>
+					</a>
+				</div>
+			</div>
+			<div class="new-trailers__content">
+				<iframe src="" title="YouTube video player" frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allowfullscreen>
+				</iframe>
+				<div class="content__info">
+					<div class="content__info-left">
+						<h3 class="movie-name"></h3>
+						<ul>
+							<li><a href="#"><img src="/public/vk-logo.svg" alt="vk-logo"></a></li>
+							<li><a href="#"><img src="/public/instagram-logo.svg" alt="instagram-logo"></a></li>
+							<li><a href="#"><img src="/public/facebook.svg" alt="facebook-logo"></a></li>
+							<li><a href="#"><img src="/public/twitter.svg" alt="twitter-logo"></a></li>
+						</ul>
+					</div>
+					<div class="content__info-right">
+						<div class="buttons">
+							<div class="like-button__box">
+								<button class="like-button">
+									<img src="/public/like.svg" alt="like">
+								</button>
+								<span class="likes-count">1213</span>
+							</div>
+							<div class="dislike-button__box">
+								<button class="dislike-button">
+									<img src="/public/dislike.svg" alt="dislike">
+								</button>
+								<span class="dislikes-count">12</span>
+							</div>
+						</div>
+					</div>
+				</div>
+		</section>
+
+		<section class="starring">
+			<div class="starring__header">
+				<h2>Постеры к фильму</h2>
+				<div class="all-starring">
+					<span>Все постеры</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="27" height="16" viewBox="0 0 27 16" fill="none">
+						<path
+							d="M26.7071 8.70711C27.0976 8.31658 27.0976 7.68342 26.7071 7.2929L20.3431 0.928934C19.9526 0.53841 19.3195 0.538409 18.9289 0.928934C18.5384 1.31946 18.5384 1.95262 18.9289 2.34315L24.5858 8L18.9289 13.6569C18.5384 14.0474 18.5384 14.6805 18.9289 15.0711C19.3195 15.4616 19.9526 15.4616 20.3431 15.0711L26.7071 8.70711ZM-8.74228e-08 9L26 9L26 7L8.74228e-08 7L-8.74228e-08 9Z"
+							fill="white" />
+					</svg>
+				</div>
+			</div>
+			<h3 class="movie-name"></h3>
+			<div class="posters-wrapper"></div>
+		</section>
+
+		<section class="starring">
+			<div class="starring__header">
+				<h2>Кадры из фильма</h2>
+				<div class="all-starring">
+					<span>Все кадры</span>
+					<svg xmlns="http://www.w3.org/2000/svg" width="27" height="16" viewBox="0 0 27 16" fill="none">
+						<path
+							d="M26.7071 8.70711C27.0976 8.31658 27.0976 7.68342 26.7071 7.2929L20.3431 0.928934C19.9526 0.53841 19.3195 0.538409 18.9289 0.928934C18.5384 1.31946 18.5384 1.95262 18.9289 2.34315L24.5858 8L18.9289 13.6569C18.5384 14.0474 18.5384 14.6805 18.9289 15.0711C19.3195 15.4616 19.9526 15.4616 20.3431 15.0711L26.7071 8.70711ZM-8.74228e-08 9L26 9L26 7L8.74228e-08 7L-8.74228e-08 9Z"
+							fill="white" />
+					</svg>
+				</div>
+			</div>
+			<h3 class="movie-name"></h3>
+			<div class="backdrops-wrapper"></div>
+		</section>
+
+		<section class="popular-movies">
+			<div class="popular-movies__header">
+				<div class="popular-movies__header-title">
+					<h2>Похожие фильмы</h2>
+				</div>
+			</div>
+
+
+			<div class="swiper">
+				<div class="swiper-wrapper">
+				</div>
+
+				<div class="swiper-button-next">
+					<svg xmlns="http://www.w3.org/2000/svg" width="27" height="24" viewBox="0 0 27 24" fill="none">
+						<path
+							d="M26.0607 13.0607C26.6464 12.4749 26.6464 11.5251 26.0607 10.9393L16.5147 1.3934C15.9289 0.807611 14.9792 0.807611 14.3934 1.3934C13.8076 1.97919 13.8076 2.92893 14.3934 3.51472L22.8787 12L14.3934 20.4853C13.8076 21.0711 13.8076 22.0208 14.3934 22.6066C14.9792 23.1924 15.9289 23.1924 16.5147 22.6066L26.0607 13.0607ZM0 13.5L25 13.5V10.5L0 10.5L0 13.5Z"
+							fill="white" />
+					</svg>
+				</div>
+				<div class="swiper-button-prev">
+					<svg xmlns="http://www.w3.org/2000/svg" width="27" height="24" viewBox="0 0 27 24" fill="none">
+						<path
+							d="M0.939341 10.9393C0.353554 11.5251 0.353554 12.4749 0.939341 13.0607L10.4853 22.6066C11.0711 23.1924 12.0208 23.1924 12.6066 22.6066C13.1924 22.0208 13.1924 21.0711 12.6066 20.4853L4.12132 12L12.6066 3.51472C13.1924 2.92893 13.1924 1.97919 12.6066 1.3934C12.0208 0.807611 11.0711 0.807611 10.4853 1.3934L0.939341 10.9393ZM27 10.5L2 10.5V13.5L27 13.5V10.5Z"
+							fill="white" />
+					</svg>
+				</div>
+				<div class="swiper-pagination"></div>
+			</div>
+		</section>
 	</main>
+
 
 
 	<footer>

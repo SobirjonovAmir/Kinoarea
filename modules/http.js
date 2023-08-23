@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL
-export const API_KEY = import.meta.env.API_KEY
+export const API_KEY = import.meta.env.VITE_API_KEY
+export const AUTH_KEY = import.meta.env.VITE_AUTH_KEY
 
 export const getData = async (path) => {
 	try {
@@ -9,7 +10,7 @@ export const getData = async (path) => {
 			method: 'GET',
 			headers: {
 				accept: 'application/json',
-				Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMWQ1YmVhYWI3ZjE5MTQ1MGZjMWJkZDRiMzdkMWY5NiIsInN1YiI6IjY0ZDY2OThmYjZjMjY0MTE1NzUzMGE2YyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.YzGTpM88ooJL87p8jF172Ep3d_BUKgDCjEMcOM_ixz8'
+				Authorization: `Bearer ${AUTH_KEY}`
 			}
 		};
 		

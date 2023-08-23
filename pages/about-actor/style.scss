@@ -13,7 +13,8 @@ body {
   width: 100%;
   overflow-x: hidden;
   background: #1e2538;
-
+  scrollbar-width: thin;
+  scrollbar-color: #ffffff10 #00000020;
   &::-webkit-scrollbar {
     width: 8px;
   }
@@ -81,7 +82,7 @@ img {
   max-width: 1000px;
   margin: 0 auto;
   margin-top: 45px;
-  margin-bottom: 50px;
+  margin-bottom: 60px;
   &__promo {
     display: flex;
     align-items: flex-start;
@@ -155,6 +156,51 @@ img {
           }
         }
       }
+
+      .favourite {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        p {
+          color: #e8e9eb;
+          font-size: 14px;
+          font-weight: 500;
+        }
+        button {
+          position: relative;
+          border-radius: 10px;
+          background: #262f45;
+          border: none;
+          outline: none;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: scale 0.4s ease, color 0.4s ease;
+          cursor: pointer;
+          svg {
+            transition: scale 0.4s ease;
+            &:active {
+              scale: 0.95;
+            }
+            min-width: 25px;
+            min-height: 25px;
+            margin: 15px;
+            fill: white;
+            height: 25px;
+            width: 25px;
+          }
+          &.active {
+            background: rgba(212, 48, 48, 0.2);
+            svg {
+              fill: rgba(212, 48, 48, 1);
+            }
+          }
+        }
+      }
+
       .about-actor {
         overflow: hidden;
         display: flex;
@@ -206,14 +252,24 @@ img {
           translate: +100% 0;
           transition: 0.5s ease;
           width: 500px;
+          height: 260px;
           overflow: hidden;
+          overflow-y: auto;
+          scrollbar-width: none;
+          margin-top: 15px;
+
+          &::-webkit-scrollbar {
+            width: 0;
+          }
+          p {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 17px;
+            font-weight: 500;
+          }
           &.active {
             translate: -100% 0 !important;
             color: black;
-          }
-          b {
-            cursor: pointer;
-            color: #f2f60f;
           }
         }
       }
@@ -230,7 +286,7 @@ img {
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     user-select: none;
 
     &-title {
@@ -244,7 +300,7 @@ img {
   .swiper {
     user-select: none;
     width: 100%;
-    padding-top: 25px;
+    padding-top: 30px;
 
     .swiper-wrapper {
       display: flex;
@@ -371,9 +427,6 @@ img {
     .swiper-pagination {
       position: absolute;
       top: 0;
-      right: 0;
-      left: auto;
-      width: 90px;
       bottom: auto;
       color: #fff;
       font-size: 18px;
