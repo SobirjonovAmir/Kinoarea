@@ -191,7 +191,7 @@ getData(`/movie/${movieId}?api_key=${API_KEY}&append_to_response=images`)
 					if (i === 3) {
 						const span = document.createElement("span")
 						const bg = document.createElement("div")
-						span.innerHTML = "+" + posters.length
+						span.innerHTML = "+" + (posters.length - 4)
 						div.append(span, bg)
 					}
 					div.style.backgroundImage = poster.file_path ? `url(https://image.tmdb.org/t/p/original${poster.file_path})` : `url(/public/default-poster.svg)`
@@ -210,7 +210,7 @@ getData(`/movie/${movieId}?api_key=${API_KEY}&append_to_response=images`)
 					if (i === 5) {
 						const span = document.createElement("span")
 						const bg = document.createElement("div")
-						span.innerHTML = "+" + backdrops.length
+						span.innerHTML = "+" + (backdrops.length - 6)
 						div.append(span, bg)
 					}
 					div.style.backgroundImage = backdrop.file_path ? `url(https://image.tmdb.org/t/p/original${backdrop.file_path})` : `url(/public/default-poster.svg)`

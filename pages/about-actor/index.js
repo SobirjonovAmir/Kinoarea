@@ -1,5 +1,5 @@
 import { getData, API_KEY } from "/modules/http";
-import { calculateAge, getAgeString, findRussianName } from "/modules/helper";
+import { getAgeString, findRussianName } from "/modules/helper";
 import { format, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import Swiper from 'swiper';
@@ -9,10 +9,10 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const currentYear = new Date().getFullYear();
 const currentUrl = window.location.href;
 const url = new URL(currentUrl);
 const personID = url.searchParams.get("id");
+const currentYear = new Date().getFullYear();
 const page_title = document.querySelector("#page-title")
 const swipe_btns = document.querySelectorAll(".swipe__buttons button")
 const actor_information = document.querySelector(".actor-information")
@@ -29,6 +29,7 @@ const known_for = document.querySelector('.information-list .known-for');
 const movie_descripton = document.querySelector('.biography');
 const add_to_favourite = document.querySelector('.add-to-favourite');
 const favourite_count = document.querySelector('#favourite-count');
+const backdrops_wrapper = document.querySelector('.backdrops-wrapper');
 
 const anticipated_swiper = document.querySelector(".anticipated-movies__content .swiper")
 const anticipated_swiper_container = document.querySelector(".anticipated-movies__content .swiper-wrapper")
@@ -45,16 +46,32 @@ getData(`/person/${personID}?api_key=${API_KEY}&language=ru-RU&append_to_respons
 		movie_location.textContent = findRussianName(person.also_known_as) ? findRussianName(person.also_known_as) : person.name
 		movie_original_title.textContent = person.name
 		movie_descripton.innerHTML = person.biography ? person.biography : "Биография отсутствует"
-		const releaseDate = parseISO(person.birthday);
-		const formattedDate = format(releaseDate, 'd MMMM yyyy', { locale: ru });
-		birthday.innerHTML = `${formattedDate} (${getAgeString(currentYear - releaseDate.getFullYear())}) `
+		const formattedDate = format(parseISO(person.birthday), 'd MMMM yyyy', { locale: ru });
+		birthday.innerHTML = `${formattedDate} (${getAgeString(currentYear - parseISO(person.birthday).getFullYear())}) `
 		homepage.innerHTML = person.homepage ? `<a target="_blank" href='${person.homepage}'>${person.homepage}</a>` : "-"
 		birth_place.innerHTML = person.place_of_birth
-		known_for.innerHTML = person.known_for_department
+		known_for.innerHTML = person.known_for_department == "Acting" ? "Актёр" : person.known_for_department
 		favourite_count.innerHTML = person.popularity.toFixed(0)
-		person.images.profiles.forEach(element => {
-			//console.log(`url(https://image.tmdb.org/t/p/original${element.file_path})`);
-		});
+		let backdrops = person.images.profiles
+
+		if (backdrops.length !== 0) {
+			for (let i = 0; i < 6; i++) {
+				const backdrop = backdrops[i];
+				if (backdrop) {
+					const div = document.createElement("div")
+					if (i === 5) {
+						const span = document.createElement("span")
+						const bg = document.createElement("div")
+						span.innerHTML = "+" + (backdrops.length - 6)
+						div.append(span, bg)
+					}
+					div.style.backgroundImage = backdrop.file_path ? `url(https://image.tmdb.org/t/p/original${backdrop.file_path})` : `url(/public/default-poster.svg)`
+					backdrops_wrapper.append(div)
+				}
+			}
+		} else {
+			backdrops_wrapper.parentElement.firstElementChild.nextElementSibling.innerHTML = "Фотографииотсутствуют"
+		}
 	})
 
 getData(`/person/${personID}/movie_credits?api_key=${API_KEY}&language=ru-RU`)

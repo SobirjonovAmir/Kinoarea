@@ -1,7 +1,76 @@
+import { getData, API_KEY } from "./http"
 let header = document.querySelector("header")
-let miling_list = document.querySelector(".mailing-list")
-let footer_navigation = document.querySelector(".footer-navigation")
 let footer = document.querySelector("footer .container")
+searchReload()
+let search_wrapper = document.querySelector(".search-wrapper")
+let search_input = document.querySelector("form input")
+
+
+document.querySelector("form").onsubmit = (e) => {
+	e.preventDefault()
+
+	console.log(search_wrapper);
+	if (search_input !== '') {
+		getData(`/search/multi?query=${search_input.value}&include_adult=false&language=ru-RU&page=1'`)
+			.then(res => {
+				let results = res.data.results
+
+				reloadSearchComponents(results, search_wrapper)
+
+				e.target.reset()
+			})
+	}
+}
+
+function reloadSearchComponents(arr, place) {
+	place.innerHTML = ""
+	for (const item of arr) {
+		const div = document.createElement("div")
+		const img_box = document.createElement("div")
+		const img = document.createElement("img")
+		const title_box = document.createElement("div")
+		const all_genres = document.createElement("span")
+		const title = document.createElement("h3")
+		const orig_title = document.createElement("h4")
+		const rating = document.createElement("span")
+
+		div.classList.add("wrapper-item")
+		img_box.classList.add("img-box")
+		rating.classList.add("rating")
+		all_genres.classList.add("genres")
+
+		getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
+			.then(res => {
+				let genres = res.data.genres;
+				let finded = []
+				if (item.genre_ids) {
+					item.genre_ids.forEach(genre_id => {
+						const genre = genres.find(genre => genre.id === genre_id);
+						if (genre) {
+							finded.push(genre.name)
+						}
+					})
+					all_genres.innerHTML = finded.join(", ")
+					all_genres.title = finded.join(", ")
+				}
+			})
+
+		title.innerHTML = item.name ? item.name : item.title
+		orig_title.innerHTML = item.original_name ? item.original_name : item.original_title
+		rating.innerHTML = item.vote_average ? (+item.vote_average).toFixed(2) : (+item.popularity).toFixed(2)
+		img.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.poster_path}` : `/public/default-poster.svg`
+
+		div.onclick = () => {
+			window.open("/pages/about-movie/?id=" + item.id, '_blank')
+		}
+
+		div.append(img_box, title_box, rating)
+		img_box.append(img)
+		title_box.append(title, orig_title, all_genres)
+
+		place.append(div)
+	}
+}
 
 
 reloadHeader(header)
@@ -96,7 +165,7 @@ function reloadHeader(place) {
 	searchButton.className = "header__right-search button";
 	loginButton.className = "header__right-login button";
 	loginSpan.textContent = "Войти";
-	searchLink.href = "/pages/about-actor/";
+	searchLink.href = "#";
 	searchIcon.src = "/public/search.svg";
 	searchIcon.alt = "search";
 
@@ -256,3 +325,124 @@ form.onsubmit = (event) => {
 		document.querySelector("form .checkmark").style.background = "red"
 	}
 };
+
+
+
+
+function searchReload() {
+	let searchBg = document.createElement('div');
+	searchBg.classList.add('search-bg');
+	searchBg.id = "close-search"
+
+	let search = document.createElement("div")
+	search.classList.add("search")
+	let search_wrapper = document.createElement("div")
+	search_wrapper.classList.add("search-wrapper")
+
+	let searchContainer = document.createElement('div');
+	searchContainer.classList.add('search-container');
+
+	let logoImage = document.createElement('img');
+	logoImage.src = '/logo.svg';
+	logoImage.alt = 'Kinoarea';
+
+	let searchForm = document.createElement('form');
+	searchForm.name = 'search';
+	searchForm.action = '#';
+
+	let searchInput = document.createElement('input');
+	searchInput.type = 'text';
+	searchInput.placeholder = 'Поиск...';
+
+	let searchButton = document.createElement('button');
+	searchButton.id = 'search-button';
+	searchButton.type = 'submit';
+
+	let searchIconSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	searchIconSVG.classList.add('svg-icon', 'search-icon');
+	searchIconSVG.setAttribute('aria-labelledby', 'title desc');
+	searchIconSVG.setAttribute('role', 'img');
+	searchIconSVG.setAttribute('viewBox', '0 0 19.9 19.7');
+
+	let titleElement = document.createElement('title');
+	titleElement.id = 'title';
+	titleElement.textContent = 'Search Icon';
+	searchIconSVG.appendChild(titleElement);
+
+	let descElement = document.createElement('desc');
+	descElement.id = 'desc';
+	descElement.textContent = 'A magnifying glass icon.';
+	searchIconSVG.appendChild(descElement);
+
+	let searchPath = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	searchPath.classList.add('search-path');
+	searchPath.setAttribute('fill', 'none');
+	searchPath.setAttribute('stroke', '#000');
+
+	let pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	pathElement.setAttribute('stroke-linecap', 'square');
+	pathElement.setAttribute('d', 'M18.5 18.3l-5.4-5.4');
+	searchPath.appendChild(pathElement);
+
+	let circleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+	circleElement.setAttribute('cx', '8');
+	circleElement.setAttribute('cy', '8');
+	circleElement.setAttribute('r', '7');
+	searchPath.appendChild(circleElement);
+
+	searchIconSVG.appendChild(searchPath);
+	searchButton.appendChild(searchIconSVG);
+
+	let closeButton = document.createElement('button');
+	closeButton.id = 'close-search';
+	closeButton.type = 'reset';
+
+	let closeIconSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	closeIconSVG.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+	closeIconSVG.setAttribute('width', '22');
+	closeIconSVG.setAttribute('height', '24');
+	closeIconSVG.setAttribute('viewBox', '0 0 22 24');
+	closeIconSVG.setAttribute('fill', '#000');
+
+	let closePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	closePath.setAttribute('d', 'M2 2L22 21.9067M22 2.09332L2 22');
+	closePath.setAttribute('stroke', 'white');
+	closePath.setAttribute('stroke-width', '3');
+	closePath.setAttribute('stroke-linecap', 'round');
+	closePath.setAttribute('stroke-linejoin', 'round');
+	closeIconSVG.appendChild(closePath);
+
+	closeButton.appendChild(closeIconSVG);
+
+	searchButton.appendChild(searchIconSVG);
+
+	searchForm.append(searchInput, searchButton, closeButton);
+
+	searchContainer.append(logoImage, searchForm, search_wrapper)
+
+	search.append(searchContainer)
+
+	document.body.append(searchBg, search);
+}
+
+
+
+let open_search = document.querySelector(".header__right-search")
+let search_bg = document.querySelector(".search-bg")
+let close_search = document.querySelectorAll("#close-search")
+
+open_search.onclick = () => {
+	search_wrapper.parentElement.parentElement.style.display = "block"
+	search_bg.style.display = "block"
+	document.body.style.overflow = "hidden"
+}
+
+close_search.forEach(btn => {
+	btn.onclick = () => {
+		console.log("afsa");
+		search_wrapper.innerHTML = ""
+		search_wrapper.parentElement.parentElement.style.display = "none"
+		search_bg.style.display = "none"
+		document.body.style.overflow = "auto"
+	}
+})

@@ -21,8 +21,9 @@ function reloadSwiper() {
 		slidesPerView: 4,
 		slidesPerGroup: 4,
 		spaceBetween: 20,
-		direction: 'horizontal',
 		grabCursor: true,
+
+
 		touchRatio: 1,
 		navigation: {
 			nextEl: ".swiper-button-next",
@@ -77,6 +78,7 @@ getData(`/movie/upcoming?api_key=${API_KEY}&language=ru-RU`)
 			slidesPerGroup: 4,
 			spaceBetween: 20,
 			grabCursor: true,
+			loop: true,
 
 			navigation: {
 				nextEl: ".anticipated-movies__content .swiper-button-next",
