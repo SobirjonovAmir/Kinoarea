@@ -108,6 +108,7 @@ img {
         color: #7b87ad;
         font-size: 15px;
         font-weight: 500;
+        min-height: 18px;
         span {
           text-shadow: 1px 1px 1px #00000050;
           color: #fff;
@@ -119,11 +120,13 @@ img {
         font-size: 46px;
         font-weight: 700;
         line-height: 45px;
+        min-height: 44px;
       }
       .movie__original-title {
         display: inline-block;
         margin-top: 5px;
         color: #ffffff;
+        min-height: 20px;
         font-size: 18px;
         font-weight: 500;
       }
@@ -131,6 +134,7 @@ img {
         margin-top: 20px;
         color: #ffffff;
         font-size: 18px;
+        min-height: 120px;
         font-weight: 500;
         line-height: 166.5%;
       }

@@ -109,6 +109,67 @@
       font-size: 12px;
       font-weight: 700;
     }
+    &-confirm {
+      display: none;
+      border-radius: 10px;
+      background: #3657cb;
+
+      &:hover {
+        box-shadow: 0px 0px 15px 0px rgba(72, 113, 255, 0.6);
+      }
+      transition: all 0.5s ease;
+
+      padding: 0 40px;
+      height: 40px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .loged {
+      display: none;
+      align-items: center;
+      gap: 10px;
+
+      details {
+        position: relative;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 600;
+        summary {
+          text-transform: capitalize;
+          cursor: pointer;
+        }
+        .details-wrapper {
+          position: absolute;
+          margin-top: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          span {
+            cursor: pointer;
+            text-decoration: underline;
+            transition: 0.2s ease;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+
+      .user-foto {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+        cursor: pointer;
+        img {
+          object-fit: cover;
+          border-radius: 50%;
+        }
+      }
+    }
+
     .button {
       transition: all 0.5s ease;
       border: none;
@@ -386,11 +447,12 @@ footer {
   }
 }
 
-//!-----------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 
 .search-bg {
   position: absolute;
   display: none;
+  z-index: 1000;
   top: -10px;
   left: -10px;
   bottom: -10px;
@@ -402,6 +464,7 @@ footer {
   filter: blur(10px);
 }
 .search {
+  user-select: none;
   position: absolute;
   display: none;
   z-index: 999;
@@ -461,16 +524,20 @@ footer {
         }
       }
 
-      #close-search {
+      .close-search {
         position: absolute;
         right: -40px;
         background: none;
         border: none;
         outline: none;
-        transition: scale 0.3s ease;
         cursor: pointer;
-        &:active {
-          scale: 0.97;
+        img {
+          transition: scale 0.3s ease;
+          &:active {
+            scale: 0.97;
+          }
+          width: 30px;
+          height: 30px;
         }
       }
     }
@@ -542,7 +609,7 @@ footer {
           padding: 5px 8px;
           color: #fff;
           text-align: center;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 700;
         }
         .genres {

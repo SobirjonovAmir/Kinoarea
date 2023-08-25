@@ -438,13 +438,34 @@ function reloadCrew(arr, place, txt) {
 	div.append(title, ol)
 	place.append(div)
 }
-
-add_to_favourite.onclick = () => {
-	if (add_to_favourite.classList.contains("active")) {
-		add_to_favourite.classList.remove("active")
-		favourite_count.innerHTML--
-	} else {
+let data = JSON.parse(localStorage.getItem("movies"))
+if (data) {
+	if (data.includes(movieId)) {
 		add_to_favourite.classList.add("active")
 		favourite_count.innerHTML++
+	} else {
+		add_to_favourite.classList.remove("active")
+	}	
+}
+
+
+add_to_favourite.onclick = () => {
+	if (JSON.parse(localStorage.getItem("movies"))) {
+		let data = JSON.parse(localStorage.getItem("movies"))
+		if (data.includes(movieId)) {
+			let filtered = data.filter(item => item !== movieId)
+			localStorage.setItem("movies", JSON.stringify(filtered))
+			add_to_favourite.classList.remove("active")
+			favourite_count.innerHTML--
+		} else {
+			add_to_favourite.classList.add("active")
+			favourite_count.innerHTML++
+			localStorage.setItem("movies", JSON.stringify([...data, movieId]))
+		}
+	} else {
+		localStorage.setItem("movies", JSON.stringify([movieId]))
 	}
 }
+
+
+

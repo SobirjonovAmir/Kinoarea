@@ -210,12 +210,32 @@ swipe_btns.forEach(el => {
 	}
 })
 
-add_to_favourite.onclick = () => {
-	if (add_to_favourite.classList.contains("active")) {
-		add_to_favourite.classList.remove("active")
-		favourite_count.innerHTML--
-	} else {
+
+
+let data = JSON.parse(localStorage.getItem("actors"))
+if (JSON.parse(localStorage.getItem("actors"))) {
+	if (data.includes(personID)) {
 		add_to_favourite.classList.add("active")
 		favourite_count.innerHTML++
+	} else {
+		add_to_favourite.classList.remove("active")
+	}
+}
+
+add_to_favourite.onclick = () => {
+	if (JSON.parse(localStorage.getItem("actors"))) {
+		let data = JSON.parse(localStorage.getItem("actors"))
+		if (data.includes(personID)) {
+			let filtered = data.filter(item => item !== personID)
+			localStorage.setItem("actors", JSON.stringify(filtered))
+			add_to_favourite.classList.remove("active")
+			favourite_count.innerHTML--
+		} else {
+			add_to_favourite.classList.add("active")
+			favourite_count.innerHTML++
+			localStorage.setItem("actors", JSON.stringify([...data, personID]))
+		}
+	} else {
+		localStorage.setItem("actors", JSON.stringify([personID]))
 	}
 }
