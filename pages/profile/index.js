@@ -7,19 +7,36 @@ const user_name = document.querySelector(".user-name")
 const aside_elements = document.querySelectorAll("aside ul li")
 const pages = document.querySelectorAll(".pages")
 const movies_wrapper = document.querySelector(".movies-wrapper")
+const actors_wrapper = document.querySelector(".actors-wrapper")
+
 let movies_data = JSON.parse(localStorage.getItem("movies")) || null
+let actors_data = JSON.parse(localStorage.getItem("actors")) || null
+
+if (actors_data) {
+	actors_wrapper.innerHTML = ""
+	for (const item of actors_data) {
+		console.log(item);
+		getData(`/person/${item}?api_key=${API_KEY}&language=ru-RU`)
+			.then(res => {
+				console.log(res.data);
+				reloadCast(res.data, actors_wrapper)
+			})
+	}
+} else {
+	actors_wrapper.innerHTML = "Нету фильмов"
+}
+
+
 
 if (movies_data) {
 	movies_wrapper.innerHTML = ""
 	for (const item of movies_data) {
-		console.log(item);
 		getData(`/movie/${item}?api_key=${API_KEY}&language=ru-RU`)
 			.then(res => {
-				console.log(res.data);
 				reload(res.data, movies_wrapper)
 			})
 	}
-}else {
+} else {
 	movies_wrapper.innerHTML = "Нету фильмов"
 }
 
@@ -42,6 +59,45 @@ aside_elements.forEach(el => {
 		})
 	}
 })
+
+
+
+
+
+
+function reloadCast(person, place) {
+	const div = document.createElement("div")
+	const img_box = document.createElement("div")
+	const title = document.createElement("div")
+	const img = document.createElement("img")
+	const name = document.createElement("span")
+	const character = document.createElement("span")
+
+
+	div.classList.add("starring__content-item")
+	img_box.classList.add("item-image__box")
+	title.classList.add("item-title__box")
+
+	img_box.onclick = () => {
+		window.open("/pages/about-actor/?id=" + person.id, '_blank')
+	}
+	name.onclick = () => {
+		window.open("/pages/about-actor/?id=" + person.id, '_blank')
+	}
+
+	name.textContent = person.name
+	character.textContent = person.character
+	img.src = person.profile_path ? `https://image.tmdb.org/t/p/original${person.profile_path}` : "/default_profile.svg"
+
+	div.append(img_box, title)
+	img_box.append(img)
+	title.append(name, character)
+
+	place.append(div)
+}
+
+
+
 
 
 function reload(item, place) {
