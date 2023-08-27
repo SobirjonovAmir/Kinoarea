@@ -1,5 +1,4 @@
 import { getData, API_KEY } from "/modules/http";
-
 import { format, parseISO } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import Swiper from 'swiper';
@@ -181,8 +180,6 @@ getData(`/movie/${movieId}?api_key=${API_KEY}&append_to_response=images`)
 		let posters = res.data.images.posters
 		let backdrops = res.data.images.backdrops
 
-
-
 		if (posters.length !== 0) {
 			for (let i = 0; i < 4; i++) {
 				const poster = posters[i];
@@ -287,7 +284,6 @@ function getColorForRating(rating) {
 	}
 }
 
-
 function createRatingChart(rating, targetElementId, color) {
 	const maxRating = 10
 	const emptySpace = maxRating - rating
@@ -325,8 +321,6 @@ function createRatingChart(rating, targetElementId, color) {
 		options: options
 	});
 }
-
-
 
 function reload(arr, place) {
 	place.innerHTML = ""
@@ -438,20 +432,24 @@ function reloadCrew(arr, place, txt) {
 	div.append(title, ol)
 	place.append(div)
 }
+
+
 let data = JSON.parse(localStorage.getItem("movies"))
 if (data) {
 	if (data.includes(movieId)) {
 		add_to_favourite.classList.add("active")
-		favourite_count.innerHTML++
+
 	} else {
 		add_to_favourite.classList.remove("active")
-	}	
+	}
+}
+if (add_to_favourite.classList.contains("active")) {
+	favourite_count.innerHTML++
 }
 
-
 add_to_favourite.onclick = () => {
-	if (JSON.parse(localStorage.getItem("movies"))) {
-		let data = JSON.parse(localStorage.getItem("movies"))
+	let data = JSON.parse(localStorage.getItem("movies")) || null
+	if (data) {
 		if (data.includes(movieId)) {
 			let filtered = data.filter(item => item !== movieId)
 			localStorage.setItem("movies", JSON.stringify(filtered))
@@ -459,11 +457,14 @@ add_to_favourite.onclick = () => {
 			favourite_count.innerHTML--
 		} else {
 			add_to_favourite.classList.add("active")
-			favourite_count.innerHTML++
 			localStorage.setItem("movies", JSON.stringify([...data, movieId]))
+			favourite_count.innerHTML++
 		}
 	} else {
 		localStorage.setItem("movies", JSON.stringify([movieId]))
+		add_to_favourite.classList.add("active")
+		favourite_count.innerHTML++
+
 	}
 }
 

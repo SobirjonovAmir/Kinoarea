@@ -1,3 +1,5 @@
+@import url("/fonts/stylesheet.css");
+
 * {
   padding: 0;
   margin: 0;
@@ -63,10 +65,10 @@ img {
   width: 100%;
   height: 100%;
 }
-.conatiner {
+.container {
   max-width: 1220px;
   margin: 0 auto;
-  padding: 0 10px;
+  padding: 0 50px;
 }
 
 main {
@@ -152,8 +154,8 @@ main {
   &__content {
     user-select: none;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 20px;
 
     .item-banner {
       position: relative;
@@ -162,7 +164,7 @@ main {
       background-size: cover;
       background-position: center;
       width: 100%;
-      height: 430px;
+      height: 400px;
       transition: animation 700ms ease;
       &:hover .item-banner__bg {
         animation: fade-in 700ms ease-in;
@@ -339,10 +341,14 @@ main {
       align-items: center;
       justify-content: space-between;
       gap: 20px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       &-left {
         display: flex;
         align-items: center;
+        flex-wrap: nowrap;
         justify-content: center;
         gap: 30px;
 
@@ -840,10 +846,11 @@ main {
   &__content {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
 
     .big-block {
+      width: 100%;
       position: relative;
       background-size: cover;
       background-position: center;
@@ -923,6 +930,7 @@ main {
       }
     }
     .others {
+      width: 100%;
       display: flex;
       flex-direction: column;
       padding: 10px;
@@ -1166,6 +1174,26 @@ main {
 }
 
 //!----------------------------------------------------------------------------------------
+
+@media (max-width: 1100px) {
+  .in-cinema {
+    &__header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+
+      &-line {
+        display: none;
+      }
+      &-categories {
+        max-width: 100%;
+      }
+    }
+    &__content {
+    }
+  }
+}
 
 @keyframes fade-in {
   from {

@@ -36,22 +36,22 @@ function reloadSwiper() {
 		breakpoints: {
 			360: {
 				spaceBetween: 10,
-				slidesPerView: 1
+				slidesPerView: 1,
+				slidesPerGroup: 1,
 			},
-			768: {
+			458: {
+				slidesPerGroup: 2,
 				slidesPerView: 2,
 				spaceBetween: 15,
 			},
-			1000: {
-				slidesPerView: 4,
-				spaceBetween: 20,
+			800: {
+				slidesPerView: 3,
+				slidesPerGroup: 3,
+				spaceBetween: 15,
 			},
-			1440: {
+			1100: {
 				slidesPerView: 4,
-				spaceBetween: 20,
-			},
-			1900: {
-				slidesPerView: 4,
+				slidesPerGroup: 4,
 				spaceBetween: 20,
 			}
 		},
@@ -92,26 +92,21 @@ getData(`/movie/upcoming?api_key=${API_KEY}&language=ru-RU`)
 				360: {
 					spaceBetween: 10,
 					slidesPerView: 1,
-					slidesPerGroup: 1
+					slidesPerGroup: 1,
 				},
-				768: {
+				450: {
+					slidesPerGroup: 2,
 					slidesPerView: 2,
 					spaceBetween: 15,
-					slidesPerGroup: 2
-
 				},
-				1024: {
+				800: {
 					slidesPerView: 3,
-					spaceBetween: 20,
-					slidesPerGroup: 3
+					slidesPerGroup: 3,
+					spaceBetween: 15,
 				},
-				1440: {
+				1100: {
 					slidesPerView: 4,
 					slidesPerGroup: 4,
-					spaceBetween: 20,
-				},
-				1900: {
-					slidesPerView: 4,
 					spaceBetween: 20,
 				}
 			},

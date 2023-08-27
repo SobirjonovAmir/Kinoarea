@@ -279,6 +279,7 @@ img {
   }
   &.active {
     display: block !important;
+    transition: .4s ease;
   }
   &__header {
     display: flex;

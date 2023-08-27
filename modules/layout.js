@@ -1,96 +1,67 @@
 import { getData, API_KEY, AUTH_KEY } from "./http"
-let header = document.querySelector("header")
-let footer = document.querySelector("footer .container")
-searchReload()
-let search_wrapper = document.querySelector(".search-wrapper")
-
-let search_form = document.forms.search
-let search_input = search_form.querySelector("input")
-
-search_form.onsubmit = (e) => {
-	e.preventDefault()
-
-	console.log(search_wrapper);
-	if (search_input.value !== '') {
-		getData(`/search/multi?query=${search_input.value}&include_adult=false&language=ru-RU&page=1`)
-			.then(res => {
-				let results = res.data.results
-				reloadSearchComponents(results, search_wrapper)
-				e.target.reset()
-			})
-	}
-}
-
-function reloadSearchComponents(arr, place) {
-	place.innerHTML = ""
-	for (const item of arr) {
-		const div = document.createElement("div")
-		const img_box = document.createElement("div")
-		const img = document.createElement("img")
-		const title_box = document.createElement("div")
-		const all_genres = document.createElement("span")
-		const title = document.createElement("h3")
-		const orig_title = document.createElement("h4")
-		const rating = document.createElement("span")
-
-		div.classList.add("wrapper-item")
-		img_box.classList.add("img-box")
-		rating.classList.add("rating")
-		all_genres.classList.add("genres")
-
-		getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
-			.then(res => {
-				let genres = res.data.genres;
-				let finded = []
-				if (item.genre_ids) {
-					item.genre_ids.forEach(genre_id => {
-						const genre = genres.find(genre => genre.id === genre_id);
-						if (genre) {
-							finded.push(genre.name)
-						}
-					})
-					all_genres.innerHTML = finded.join(", ")
-					all_genres.title = finded.join(", ")
-				}
-			})
-
-		title.innerHTML = item.name ? item.name : item.title
-		orig_title.innerHTML = item.original_name ? item.original_name : item.original_title
-		rating.innerHTML = item.vote_average ? (+item.vote_average).toFixed(2) : (+item.popularity).toFixed(2)
-		img.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.poster_path}` : `/public/default-poster.svg`
-
-		div.onclick = () => {
-			window.open("/pages/about-movie/?id=" + item.id, '_blank')
-		}
-
-		div.append(img_box, title_box, rating)
-		img_box.append(img)
-		title_box.append(title, orig_title, all_genres)
-
-		place.append(div)
-	}
-}
-
-
+const header = document.querySelector("header")
+const footer = document.querySelector("footer .container")
+searchReload(header)
 reloadHeader(header)
+reloadEmailing(footer)
+
+const search_wrapper = document.querySelector(".search-wrapper")
+const search_form = document.forms.search
+const search_input = search_form.querySelector("input")
+const form = document.querySelector('form');
+const search_bg = document.querySelector(".search-bg")
+const loged = document.querySelector(".loged")
+const user_auth = JSON.parse(localStorage.getItem('user_auth')) || null
+const login_btn = document.querySelector(".header__right-login")
+const confirm_btn = document.querySelector(".header__right-confirm")
+const user_foto = document.querySelector(".user-foto img")
+const user_name = document.querySelector("#user-name")
+let reqToken
+
+
+
+
 function reloadHeader(place) {
+	let header_top = document.createElement("div");
+	let header_bottom = document.createElement("div");
 	let headerLeft = document.createElement("div");
 	let headerLeftLogo = document.createElement("div");
 	let logoLink = document.createElement("a");
 	let logoImg = document.createElement("img");
 	let headerLeftSocial = document.createElement("div");
 	let socialList = document.createElement("ul");
+	let leftMenu = document.createElement("div")
+	let leftSearchBtn = document.createElement("button");
+	let leftSearchIcon = document.createElement("img");
+	let burgerMenu = document.createElement("button");
 
+	for (let i = 0; i < 3; i++) {
+		const line = document.createElement("span")
+		burgerMenu.append(line)
+	}
 
+	leftMenu.className = "menu"
+	header_top.className = "header__top"
+	header_bottom.className = "header__bottom"
 	headerLeft.className = "header__left";
 	headerLeftLogo.className = "header__left-logo";
 	headerLeftSocial.className = "header__left-social";
 
+	leftSearchIcon.src = "/public/search.svg";
+	leftSearchIcon.alt = "search";
+	leftSearchBtn.onclick = () => {
+		search_wrapper.parentElement.parentElement.style.display = "block"
+		search_bg.style.display = "block"
+		document.body.style.overflowY = "hidden"
+	}
+
+	leftSearchBtn.classList.add('left-search__button')
+
+	leftSearchBtn.append(leftSearchIcon)
 	logoLink.href = "/";
 
 	logoImg.src = "/public/logo.svg";
 	logoImg.alt = "Kinoarea-logo";
-
 	logoLink.appendChild(logoImg);
 	headerLeftLogo.appendChild(logoLink);
 
@@ -120,7 +91,6 @@ function reloadHeader(place) {
 	headerLeftSocial.appendChild(socialList);
 	headerLeft.appendChild(headerLeftLogo);
 	headerLeft.appendChild(headerLeftSocial);
-	place.appendChild(headerLeft);
 
 
 	let headerCenter = document.createElement("div");
@@ -150,8 +120,35 @@ function reloadHeader(place) {
 	}
 
 	navigation.append(navigationList);
+
 	headerCenter.append(navigation);
-	place.append(headerCenter);
+
+	let navigation_bottom = document.createElement("nav");
+	let navigationList_bottom = document.createElement("ul");
+	let navigationItems_bottom = [
+		"Афиша",
+		"Медиа",
+		"Фильмы",
+		"Актёры",
+		"Новости",
+		"Подборки",
+		"Категории"
+	];
+
+	navigation_bottom.className = "header__bottom-navigation";
+	navigationList_bottom.className = "navigation__list-bottom";
+
+	for (let itemText of navigationItems_bottom) {
+		let listItem = document.createElement("li");
+		let link = document.createElement("a");
+		link.href = "#";
+		link.textContent = itemText;
+		listItem.append(link);
+		navigationList_bottom.append(listItem);
+	}
+
+	navigation_bottom.append(navigationList_bottom);
+	header_bottom.append(navigation_bottom)
 
 
 	const divLoged = document.createElement('div');
@@ -209,6 +206,11 @@ function reloadHeader(place) {
 	confirmButton.textContent = "Подтвердить";
 	searchIcon.src = "/public/search.svg";
 	searchIcon.alt = "search";
+	searchButton.onclick = () => {
+		search_wrapper.parentElement.parentElement.style.display = "block"
+		search_bg.style.display = "block"
+		document.body.style.overflowY = "hidden"
+	}
 
 
 	searchButton.append(searchIcon);
@@ -216,159 +218,150 @@ function reloadHeader(place) {
 	loginButton.append(loginSpan);
 	headerRight.append(loginButton, confirmButton, divLoged);
 
-	place.append(headerRight);
+	leftMenu.append(burgerMenu, leftSearchBtn)
+	header_top.append(leftMenu, headerLeft, headerCenter, headerRight);
+	place.append(header_top, header_bottom)
 }
 
+function reloadEmailing(place) {
+	//! секция для E-mail рассылки
+	const mailingSection = document.createElement('section');
+	const mailingLogo = document.createElement('div');
+	const mailingLogoImage = document.createElement('img');
+	const mailingTitle = document.createElement('h3');
+	const mailingDescription = document.createElement('p');
+	const mailingForm = document.createElement('form');
+	const formTop = document.createElement('div');
+	const emailInput = document.createElement('input');
+	const subscribeButton = document.createElement('button');
+	const privacyDiv = document.createElement('div');
+	const privacyLabel = document.createElement('label');
+	const privacyCheckbox = document.createElement('input');
+	const checkboxSpan = document.createElement('span');
+	const privacyText = document.createElement('p');
 
-//! секция для E-mail рассылки
-const mailingSection = document.createElement('section');
-const mailingLogo = document.createElement('div');
-const mailingLogoImage = document.createElement('img');
-const mailingTitle = document.createElement('h3');
-const mailingDescription = document.createElement('p');
-const mailingForm = document.createElement('form');
-const formTop = document.createElement('div');
-const emailInput = document.createElement('input');
-const subscribeButton = document.createElement('button');
-const privacyDiv = document.createElement('div');
-const privacyLabel = document.createElement('label');
-const privacyCheckbox = document.createElement('input');
-const checkboxSpan = document.createElement('span');
-const privacyText = document.createElement('p');
+	mailingForm.onsubmit = (event) => {
+		event.preventDefault();
+		let data = {}
 
-mailingSection.className = 'mailing-list';
-mailingLogo.className = 'logo';
-mailingTitle.className = 'mailing-list__title';
-mailingDescription.className = 'mailing-list__description';
-formTop.className = 'form-top';
-privacyDiv.className = 'privacy';
-privacyLabel.className = 'custom-checkbox';
-checkboxSpan.className = 'checkmark';
+		if (emailInput.value == "") {
+			emailInput.style.borderBottom = "1.2px solid red"
+			return
+		}
+		emailInput.style.border = "none"
+		document.querySelector("form .checkmark").style.background = "#ccc"
 
-emailInput.autocomplete = "email"
-privacyCheckbox.autocomplete = "off"
-privacyCheckbox.name = "checkbox"
-mailingForm.name = "mailing_form"
-mailingForm.action = '';
-mailingLogoImage.src = '/public/mailing-logo.svg';
-mailingLogoImage.alt = 'Kinoarea';
-emailInput.placeholder = 'Введите свой E-mail адрес';
-emailInput.type = 'email';
-emailInput.name = "email"
-subscribeButton.type = 'submit';
-privacyCheckbox.type = 'checkbox';
-subscribeButton.textContent = 'Подписаться';
-mailingTitle.textContent = 'Подпишитесь на E-mail рассылку';
-mailingDescription.textContent = 'Если хотите быть в курсе последних новостей и новинок кино - заполните форму ниже и оформите бесплатную E-mail рассылку!';
-privacyText.innerHTML = 'Соглашаюсь на условия <a href="#" class="mark">политики конфиденциальности</a>';
+		if (privacyCheckbox.checked) {
+			data.email = emailInput.value
+			console.log(data)
 
-mailingLogo.append(mailingLogoImage);
-formTop.append(emailInput, subscribeButton);
-privacyLabel.append(privacyCheckbox, checkboxSpan);
-privacyDiv.append(privacyLabel, privacyText);
-mailingForm.append(formTop, privacyDiv);
-mailingSection.append(mailingLogo, mailingTitle, mailingDescription, mailingForm);
+			form.reset()
+		} else {
+			document.querySelector("form .checkmark").style.background = "red"
+		}
+	};
 
-footer.append(mailingSection);
+	mailingSection.className = 'mailing-list';
+	mailingLogo.className = 'logo';
+	mailingTitle.className = 'mailing-list__title';
+	mailingDescription.className = 'mailing-list__description';
+	formTop.className = 'form-top';
+	privacyDiv.className = 'privacy';
+	privacyLabel.className = 'custom-checkbox';
+	checkboxSpan.className = 'checkmark';
 
+	emailInput.autocomplete = "email"
+	privacyCheckbox.autocomplete = "off"
+	privacyCheckbox.name = "checkbox"
+	mailingForm.name = "mailing_form"
+	mailingForm.action = '';
+	mailingLogoImage.src = '/public/mailing-logo.svg';
+	mailingLogoImage.alt = 'Kinoarea';
+	emailInput.placeholder = 'Введите свой E-mail адрес';
+	emailInput.type = 'email';
+	emailInput.name = "email"
+	subscribeButton.type = 'submit';
+	privacyCheckbox.type = 'checkbox';
+	subscribeButton.textContent = 'Подписаться';
+	mailingTitle.textContent = 'Подпишитесь на E-mail рассылку';
+	mailingDescription.textContent = 'Если хотите быть в курсе последних новостей и новинок кино - заполните форму ниже и оформите бесплатную E-mail рассылку!';
+	privacyText.innerHTML = 'Соглашаюсь на условия <a href="#" class="mark">политики конфиденциальности</a>';
 
-//! секция для навигации футера
-const footerNavigationSection = document.createElement('section');
-const footerNavTop = document.createElement('div');
-const socialList = document.createElement('ul');
+	mailingLogo.append(mailingLogoImage);
+	formTop.append(emailInput, subscribeButton);
+	privacyLabel.append(privacyCheckbox, checkboxSpan);
+	privacyDiv.append(privacyLabel, privacyText);
+	mailingForm.append(formTop, privacyDiv);
+	mailingSection.append(mailingLogo, mailingTitle, mailingDescription, mailingForm);
 
-footerNavigationSection.className = 'footer-navigation';
-footerNavTop.className = 'footer-navigation__top';
-socialList.className = 'social-list';
-
-const socialLinksData = [
-	{ href: '#', src: '/public/vk-logo.svg', alt: 'vk' },
-	{ href: '#', src: '/public/instagram-logo.svg', alt: 'instagram' },
-	{ href: '#', src: '/public/facebook.svg', alt: 'facebook' },
-	{ href: '#', src: '/public/twitter.svg', alt: 'twitter' },
-	{ href: '#', src: '/public/youtube-logo.svg', alt: 'youtube' }
-];
-
-socialLinksData.forEach(linkData => {
-	const socialListItem = document.createElement('li');
-	const socialLink = document.createElement('a');
-	const socialImage = document.createElement('img');
-	socialListItem.className = 'social-list__item';
-	socialLink.href = linkData.href;
-	socialImage.src = linkData.src;
-	socialImage.alt = linkData.alt;
-	socialLink.append(socialImage);
-	socialListItem.append(socialLink);
-	socialList.append(socialListItem);
-});
-
-footerNavTop.append(socialList);
-
-const footerNavCenter = document.createElement('nav');
-const navigationList = document.createElement('ul');
-const navigationLinksData = ['Афиша', 'Медиа', 'Фильмы', 'Актёры', 'Новости', 'Подборки', 'Категории'];
-
-footerNavCenter.className = 'footer-navigation-center';
-navigationList.className = 'navigation__list';
-
-navigationLinksData.forEach(linkText => {
-	const navigationListItem = document.createElement('li');
-	const navigationLink = document.createElement('a');
-	navigationLink.href = '#';
-	navigationLink.textContent = linkText;
-	navigationListItem.append(navigationLink);
-	navigationList.append(navigationListItem);
-});
-
-const footerNavBottom = document.createElement('div');
-const copyrightText = document.createElement('p');
-const privacyLink = document.createElement('a');
-
-footerNavBottom.className = 'footer-navigation__bottom';
-copyrightText.textContent = '2020 © Kinoarea. Все права защищены';
-privacyLink.href = '#';
-privacyLink.textContent = 'Политика конфиденциальности';
-
-footerNavCenter.append(navigationList);
-footerNavBottom.append(copyrightText, privacyLink);
-footerNavigationSection.append(footerNavTop, footerNavCenter, footerNavBottom);
-
-footer.append(footerNavigationSection);
+	place.append(mailingSection);
 
 
+	//! секция для навигации футера
+	const footerNavigationSection = document.createElement('section');
+	const footerNavTop = document.createElement('div');
+	const socialList = document.createElement('ul');
 
+	footerNavigationSection.className = 'footer-navigation';
+	footerNavTop.className = 'footer-navigation__top';
+	socialList.className = 'social-list';
 
-const form = document.querySelector('form');
-const formInput = form.querySelector('input[type="email"]');
-const formCheckbox = form.querySelector('.privacy input[type="checkbox"]');
-const submitButton = form.querySelector('button[type="submit"]');
+	const socialLinksData = [
+		{ href: '#', src: '/public/vk-logo.svg', alt: 'vk' },
+		{ href: '#', src: '/public/instagram-logo.svg', alt: 'instagram' },
+		{ href: '#', src: '/public/facebook.svg', alt: 'facebook' },
+		{ href: '#', src: '/public/twitter.svg', alt: 'twitter' },
+		{ href: '#', src: '/public/youtube-logo.svg', alt: 'youtube' }
+	];
 
-form.onsubmit = (event) => {
-	event.preventDefault();
-	let data = {}
+	socialLinksData.forEach(linkData => {
+		const socialListItem = document.createElement('li');
+		const socialLink = document.createElement('a');
+		const socialImage = document.createElement('img');
+		socialListItem.className = 'social-list__item';
+		socialLink.href = linkData.href;
+		socialImage.src = linkData.src;
+		socialImage.alt = linkData.alt;
+		socialLink.append(socialImage);
+		socialListItem.append(socialLink);
+		socialList.append(socialListItem);
+	});
 
-	if (formInput.value == "") {
-		formInput.style.borderBottom = "1.2px solid red"
-		return
-	}
-	formInput.style.border = "none"
-	document.querySelector("form .checkmark").style.background = "#ccc"
+	footerNavTop.append(socialList);
 
-	if (formCheckbox.checked) {
+	const footerNavCenter = document.createElement('nav');
+	const navigationList = document.createElement('ul');
+	const navigationLinksData = ['Афиша', 'Медиа', 'Фильмы', 'Актёры', 'Новости', 'Подборки', 'Категории'];
 
-		data.email = formInput.value
-		console.log(data)
+	footerNavCenter.className = 'footer-navigation-center';
+	navigationList.className = 'navigation__list';
 
-		form.reset()
-	} else {
-		document.querySelector("form .checkmark").style.background = "red"
-	}
-};
+	navigationLinksData.forEach(linkText => {
+		const navigationListItem = document.createElement('li');
+		const navigationLink = document.createElement('a');
+		navigationLink.href = '#';
+		navigationLink.textContent = linkText;
+		navigationListItem.append(navigationLink);
+		navigationList.append(navigationListItem);
+	});
 
+	const footerNavBottom = document.createElement('div');
+	const copyrightText = document.createElement('p');
+	const privacyLink = document.createElement('a');
 
+	footerNavBottom.className = 'footer-navigation__bottom';
+	copyrightText.textContent = '2020 © Kinoarea. Все права защищены';
+	privacyLink.href = '#';
+	privacyLink.textContent = 'Политика конфиденциальности';
 
+	footerNavCenter.append(navigationList);
+	footerNavBottom.append(copyrightText, privacyLink);
+	footerNavigationSection.append(footerNavTop, footerNavCenter, footerNavBottom);
 
-function searchReload() {
+	place.append(footerNavigationSection);
+}
+
+function searchReload(place) {
 	let searchBg = document.createElement('div');
 	let search = document.createElement("div")
 	let search_wrapper = document.createElement("div")
@@ -376,6 +369,25 @@ function searchReload() {
 	let logoImage = document.createElement('img');
 	let searchForm = document.createElement('form');
 	let searchInput = document.createElement('input');
+
+	searchForm.onsubmit = (e) => {
+		e.preventDefault()
+
+		if (searchInput.value !== '') {
+			getData(`/search/multi?query=${searchInput.value}&include_adult=false&language=ru-RU&page=1`)
+				.then(res => {
+					let results = res.data.results
+					if (results.length !== 0) {
+						reloadSearchComponents(results, search_wrapper)
+					} else {
+						search_wrapper.innerHTML = "Ничего не нашлось"
+					}
+					e.target.reset()
+				})
+		} else {
+			searchInput.focus()
+		}
+	}
 
 	searchBg.classList.add('search-bg');
 	search.classList.add("search")
@@ -388,7 +400,6 @@ function searchReload() {
 	searchForm.name = 'search';
 	searchInput.type = 'text';
 	searchInput.placeholder = 'Поиск...';
-
 
 
 	let searchButton = document.createElement('button');
@@ -420,6 +431,13 @@ function searchReload() {
 	closeButton.className = 'close-search';
 	closeButton.type = 'reset';
 
+	closeButton.onclick = () => {
+		search_wrapper.innerHTML = ""
+		document.body.style.overflowY = "auto"
+		search_wrapper.parentElement.parentElement.style.display = "none"
+		search_bg.style.display = "none"
+	}
+
 	let closeIcon = document.createElement("img");
 	closeIcon.src = "/close.svg"
 
@@ -430,42 +448,63 @@ function searchReload() {
 
 	search.append(searchContainer)
 
-	document.body.append(searchBg, search);
+	place.append(searchBg, search);
 }
 
+function reloadSearchComponents(arr, place) {
+	place.innerHTML = ""
+	for (const item of arr) {
+		const div = document.createElement("div")
+		const img_box = document.createElement("div")
+		const img = document.createElement("img")
+		const title_box = document.createElement("div")
+		const all_genres = document.createElement("span")
+		const title = document.createElement("h3")
+		const orig_title = document.createElement("h4")
+		const rating = document.createElement("span")
 
+		div.classList.add("wrapper-item")
+		img_box.classList.add("img-box")
+		rating.classList.add("rating")
+		all_genres.classList.add("genres")
 
-let open_search = document.querySelector(".header__right-search")
-let search_bg = document.querySelector(".search-bg")
-let close_search = document.querySelector(".close-search")
-let loged = document.querySelector(".loged")
+		getData(`/genre/movie/list?api_key=${API_KEY}&language=ru-RU`)
+			.then(res => {
+				let genres = res.data.genres;
+				let finded = []
+				if (item.genre_ids) {
+					item.genre_ids.forEach(genre_id => {
+						const genre = genres.find(genre => genre.id === genre_id);
+						if (genre) {
+							finded.push(genre.name)
+						}
+					})
+					all_genres.innerHTML = finded.join(", ")
+					all_genres.title = finded.join(", ")
+				}
+			})
 
-open_search.onclick = () => {
-	search_wrapper.parentElement.parentElement.style.display = "block"
-	search_bg.style.display = "block"
-	document.body.style.overflowY = "hidden"
-}
+		title.innerHTML = item.name ? item.name : item.title
+		orig_title.innerHTML = item.original_name ? item.original_name : item.original_title
+		rating.innerHTML = item.vote_average ? (+item.vote_average).toFixed(2) : (+item.popularity).toFixed(2)
+		img.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.poster_path}` : `/public/default-poster.svg`
 
-function closeSearch(btn) {
-	btn.onclick = () => {
-		search_wrapper.innerHTML = ""
-		document.body.style.overflowY = "auto"
-		search_wrapper.parentElement.parentElement.style.display = "none"
-		search_bg.style.display = "none"
+		div.onclick = () => {
+			window.open("/pages/about-movie/?id=" + item.id, '_blank')
+		}
+
+		div.append(img_box, title_box, rating)
+		img_box.append(img)
+		title_box.append(title, orig_title, all_genres)
+
+		place.append(div)
 	}
 }
 
-search_bg.onclick = () => {
-	console.log("Asf");
-}
-closeSearch(search_bg)
-closeSearch(close_search)
 
-const login_btn = document.querySelector(".header__right-login")
-const confirm_btn = document.querySelector(".header__right-confirm")
-const user_foto = document.querySelector(".user-foto img")
-const user_name = document.querySelector("#user-name")
-let reqToken
+
+
+
 login_btn.onclick = () => {
 	fetch('https://api.themoviedb.org/4/auth/request_token', {
 		method: 'POST',
@@ -513,7 +552,6 @@ confirm_btn.onclick = () => {
 		})
 }
 
-let user_auth = JSON.parse(localStorage.getItem('user_auth')) || null
 
 if (user_auth) {
 	fetch(`https://api.themoviedb.org/3/account/${user_auth?.account_id}`, {
@@ -528,6 +566,8 @@ if (user_auth) {
 			login_btn.style.display = "none"
 			loged.style.display = "flex"
 			user_foto.src = `https://www.gravatar.com/avatar/${res.avatar.gravatar.hash}`
-			user_name.innerHTML = res.username
+			user_name.innerHTML = res.name
 		})
+} else {
+	login_btn.style.display = "block"
 }

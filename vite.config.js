@@ -10,7 +10,7 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				kinoarea: resolve(__dirname, 'index.html'),
-				actor: resolve(__dirname, 'pages/about-actor/index.html'),
+				profile: resolve(__dirname, 'pages/profile/index.html'),
 			},
 		},
 	},

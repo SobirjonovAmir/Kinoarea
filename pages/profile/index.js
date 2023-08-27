@@ -12,13 +12,21 @@ const actors_wrapper = document.querySelector(".actors-wrapper")
 let movies_data = JSON.parse(localStorage.getItem("movies")) || null
 let actors_data = JSON.parse(localStorage.getItem("actors")) || null
 
+
+
+
+user_foto.src = `https://www.gravatar.com/avatar/${user_data.avatar.gravatar.hash}`
+user_name.innerHTML = user_data.name
+
+if (!user_auth) {
+	location.assign("/")
+}
+
 if (actors_data) {
 	actors_wrapper.innerHTML = ""
 	for (const item of actors_data) {
-		console.log(item);
 		getData(`/person/${item}?api_key=${API_KEY}&language=ru-RU`)
 			.then(res => {
-				console.log(res.data);
 				reloadCast(res.data, actors_wrapper)
 			})
 	}
@@ -119,16 +127,17 @@ function reload(item, place) {
 		.then(res => {
 			let genres = res.data.genres;
 			let finded = []
-			if (item.genre_ids) {
-				item.genre_ids.forEach(genre_id => {
-					const genre = genres.find(genre => genre.id === genre_id);
-					if (genre) {
-						finded.push(genre.name)
-					}
-				})
-				all_genres.innerHTML = finded.join(", ")
-				all_genres.title = finded.join(", ")
-			}
+			item.genres.forEach(genre_id => {
+				const genre = genres.find(genre => genre.id === genre_id.id);
+				console.log(genre);
+				if (genre) {
+					finded.push(genre.name)
+				} else {
+					console.log(`${genre_id} не найден.`);
+				}
+			})
+			all_genres.innerHTML = finded.join(", ")
+			all_genres.title = finded.join(", ")
 		})
 
 	title.innerHTML = item.name ? item.name : item.title
@@ -157,11 +166,3 @@ function reload(item, place) {
 
 
 
-
-
-user_foto.src = `https://www.gravatar.com/avatar/${user_data.avatar.gravatar.hash}`
-user_name.innerHTML = user_data.username
-
-if (!user_auth) {
-	location.assign("/")
-}

@@ -237,5 +237,7 @@ add_to_favourite.onclick = () => {
 		}
 	} else {
 		localStorage.setItem("actors", JSON.stringify([personID]))
+		add_to_favourite.classList.add("active")
+		favourite_count.innerHTML++
 	}
 }
