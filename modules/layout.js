@@ -1,16 +1,18 @@
 import { getData, API_KEY, AUTH_KEY } from "./http"
+const user_auth = JSON.parse(localStorage.getItem('user_auth')) || null
 const header = document.querySelector("header")
 const footer = document.querySelector("footer .container")
-const user_auth = JSON.parse(localStorage.getItem('user_auth')) || null
-searchReload(header)
 reloadHeader(header)
+searchReload(header)
 reloadEmailing(footer)
 scrollTop()
+
+
 const search_container = document.querySelector(".search-container")
 const form = document.querySelector('form');
 const search_bg = document.querySelector(".search-bg")
-const login_btn = document.querySelector(".header__right-login")
 const confirm_btn = document.querySelector(".header__right-confirm")
+const login_btn = document.querySelector(".header__right-login")
 let reqToken
 
 
@@ -161,25 +163,7 @@ function reloadHeader(place) {
 	const divUserFoto = document.createElement('div');
 	const img = document.createElement('img');
 
-	if (user_auth) {
-		fetch(`https://api.themoviedb.org/3/account/${user_auth?.account_id}`, {
-			headers: {
-				Authorization: `Bearer ${AUTH_KEY}`,
-				'Content-Type': "application/json"
-			},
-		})
-			.then(res => res.json())
-			.then(res => {
-				localStorage.setItem('user_data', JSON.stringify(res))
-				login_btn.style.display = "none"
-				divLoged.style.display = "flex"
-				img.src = `https://www.gravatar.com/avatar/${res.avatar.gravatar.hash}`
-				summary.innerHTML = res.name
-			})
-	} else {
-		login_btn.style.display = "block"
-	}
-
+	
 	divUserFoto.onclick = () => {
 		location.assign(`/pages/profile/`)
 	}
@@ -237,6 +221,25 @@ function reloadHeader(place) {
 		}, 100);
 	}
 
+
+	if (user_auth) {
+		fetch(`https://api.themoviedb.org/3/account/${user_auth?.account_id}`, {
+			headers: {
+				Authorization: `Bearer ${AUTH_KEY}`,
+				'Content-Type': "application/json"
+			},
+		})
+			.then(res => res.json())
+			.then(res => {
+				localStorage.setItem('user_data', JSON.stringify(res))
+				loginButton.style.display = "none"
+				divLoged.style.display = "flex"
+				img.src = `https://www.gravatar.com/avatar/${res.avatar.gravatar.hash}`
+				summary.innerHTML = res.name
+			})
+	} else {
+		loginButton.style.display = "block"
+	}
 
 	searchButton.append(searchIcon);
 	headerRight.append(searchButton);
@@ -531,14 +534,14 @@ function reloadSearchComponents(arr, place) {
 	}
 }
 
-function scrollTop() {	
+function scrollTop() {
 	const scrollToTopBtn = document.createElement('button')
 	scrollToTopBtn.classList.add("scroll-top")
 	const arrowTopImg = document.createElement("img")
 	arrowTopImg.src = "/arrow-top.svg"
 	scrollToTopBtn.append(arrowTopImg)
 	header.append(scrollToTopBtn)
-	
+
 	window.addEventListener("scroll", () => {
 		if (window.scrollY > 400) {
 			scrollToTopBtn.classList.add("active");
@@ -546,7 +549,7 @@ function scrollTop() {
 			scrollToTopBtn.classList.remove("active");
 		}
 	});
-	
+
 	scrollToTopBtn.addEventListener("click", () => {
 		window.scrollTo({
 			top: 0,
