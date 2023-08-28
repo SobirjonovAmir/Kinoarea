@@ -97,29 +97,29 @@ getData(`/person/${personID}/movie_credits?api_key=${API_KEY}&language=ru-RU`)
 				clickable: true,
 			},
 			breakpoints: {
-				360: {
-					spaceBetween: 10,
+				100: {
+					spaceBetween: 5,
 					slidesPerView: 1,
-					slidesPerGroup: 1
+					slidesPerGroup: 1,
 				},
-				768: {
+				300: {
+					spaceBetween: 10,
+					slidesPerView: 2,
+					slidesPerGroup: 2,
+				},
+				458: {
+					slidesPerGroup: 2,
 					slidesPerView: 2,
 					spaceBetween: 15,
-					slidesPerGroup: 2
-
 				},
-				1024: {
+				650: {
 					slidesPerView: 3,
-					spaceBetween: 20,
-					slidesPerGroup: 3
+					slidesPerGroup: 3,
+					spaceBetween: 15,
 				},
-				1440: {
+				900: {
 					slidesPerView: 4,
 					slidesPerGroup: 4,
-					spaceBetween: 20,
-				},
-				1900: {
-					slidesPerView: 4,
 					spaceBetween: 20,
 				}
 			},

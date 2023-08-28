@@ -1362,7 +1362,7 @@ main {
     }
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 800px) {
   .popular-persons {
     &__header {
       h2 {
@@ -1387,6 +1387,14 @@ main {
         .person-name {
           font-size: 18px !important;
         }
+      }
+    }
+  }
+  .new-trailers {
+    &__content {
+      iframe {
+        height: 250px !important;
+        min-height: 240px;
       }
     }
   }

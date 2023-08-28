@@ -1,20 +1,16 @@
 import { getData, API_KEY, AUTH_KEY } from "./http"
 const header = document.querySelector("header")
 const footer = document.querySelector("footer .container")
+const user_auth = JSON.parse(localStorage.getItem('user_auth')) || null
 searchReload(header)
 reloadHeader(header)
 reloadEmailing(footer)
-
-const search_wrapper = document.querySelector(".search-wrapper")
+scrollTop()
 const search_container = document.querySelector(".search-container")
 const form = document.querySelector('form');
 const search_bg = document.querySelector(".search-bg")
-const loged = document.querySelector(".loged")
-const user_auth = JSON.parse(localStorage.getItem('user_auth')) || null
 const login_btn = document.querySelector(".header__right-login")
 const confirm_btn = document.querySelector(".header__right-confirm")
-const user_foto = document.querySelector(".user-foto img")
-const user_name = document.querySelector("#user-name")
 let reqToken
 
 
@@ -165,6 +161,25 @@ function reloadHeader(place) {
 	const divUserFoto = document.createElement('div');
 	const img = document.createElement('img');
 
+	if (user_auth) {
+		fetch(`https://api.themoviedb.org/3/account/${user_auth?.account_id}`, {
+			headers: {
+				Authorization: `Bearer ${AUTH_KEY}`,
+				'Content-Type': "application/json"
+			},
+		})
+			.then(res => res.json())
+			.then(res => {
+				localStorage.setItem('user_data', JSON.stringify(res))
+				login_btn.style.display = "none"
+				divLoged.style.display = "flex"
+				img.src = `https://www.gravatar.com/avatar/${res.avatar.gravatar.hash}`
+				summary.innerHTML = res.name
+			})
+	} else {
+		login_btn.style.display = "block"
+	}
+
 	divUserFoto.onclick = () => {
 		location.assign(`/pages/profile/`)
 	}
@@ -186,7 +201,6 @@ function reloadHeader(place) {
 	span1.textContent = 'Кабинет';
 	span2.textContent = 'Выйти';
 
-	img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAe1BMVEUAAAD///+1tbXy8vKNjY1ubm5MTEyampppaWnx8fH4+Pjb29v19fUlJSVSUlLi4uK9vb3Kysqtra1+fn6ioqJ4eHjp6enDw8MyMjLQ0NBZWVk/Pz8WFhZHR0fU1NRzc3M6OjoLCwucnJxhYWGHh4ceHh4jIyMZGRkrKyuQiNwPAAAC+ElEQVR4nO3a6XqqMBCAYYOoIIiIuNZau9r7v8IjSz0oi4AkwPN872/NzMgkhMhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPTOe9sJyDYetxt/tpUdQJMcoJDjf3zKjjH8lR0hz1bf2ZrsCzgYzF3pITKt3KEwvxQE2omZgih3Pr25EGLhqIjliYWKMAnjiSUC/reScLoQeyWBIlt9EVYn5ktFEQ0hTEWhBueVa0bliY2S9gy8BM2iJJLhrePqxNQ/KwkZml4CnqRHcXxLXClrz1AQeCg3xOWOJxI2andPWhBT4s1wtnTtZHlT/yAvWJZVGFaXNLqhrcUNte0Z2EaBZaxq++TEa6U9Q/FP/NPwsC+3E6+d9gxpcfQmx/xZbqap8sR81WSM0vZ/P29jI47uJ1577RmyG61w78+zqmupPUPeNYmnh3qdHDOra609Q6f/aTz19Dv7ypp4Efe1qWzrSCzmRt0xDm+amVedsD+aTLc6I5GLV2uE6Ak2j9Vie0aSi55d+dvj3IkXt+eLhJSrGd0k9Fblq5cn2NyJF5pOunD2ettgpZ+AD8HRUTGr0s8ljXOXVqnTUqNw4sXt2erqmbC5z+zR44WT3kin2RMlyZeSzq4guayNdIaOtGdkmZHgLnN5OC83dsaH0zqweiZlXxPvdPupn7fsjXTasEPtGcnLdO3qxut2e3IM3duVu3YX1qjtelL2j7Mur2PtGZk0Vl732jOSulfU1MH2jD2+cZfRyfaMlV5D8nW1PWPFG+cSutuesSfr0zrcnrFnrqHZ7faM5Z88PHLsenvGip/P8yl4ZaIhfp3yTFn/38hQY9d2rH0e145HJxH3tFPbGVelVymvV+15VX417Vt7/hmXbc/erJ4pWecY99a9bM+rh1Nxo/I9KSlWReVZKt4XlO43b2tz1NW8T6eAs0jPPa0nO8+y3lfaPH4eNi1Xl/4qclsO3wrfowMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB66B90Khxsnli+aAAAAABJRU5ErkJggg==';
 	img.alt = 'user-foto';
 
 
@@ -385,7 +399,7 @@ function searchReload(place) {
 		e.preventDefault()
 
 		if (searchInput.value !== '') {
-			getData(`/search/multi?query=${searchInput.value}&include_adult=false&language=ru-RU&page=1`)
+			getData(`/search/multi?query=${searchInput.value}&language=ru-RU&page=1`)
 				.then(res => {
 					let results = res.data.results
 					if (results.length !== 0) {
@@ -444,13 +458,13 @@ function searchReload(place) {
 
 	closeButton.onclick = () => {
 		search_wrapper.innerHTML = ""
-		search_container.classList.remove("active")
-		search_bg.classList.remove("active")
-		search_bg.classList.add("close")
+		searchContainer.classList.remove("active")
+		searchBg.classList.remove("active")
+		searchBg.classList.add("close")
 		setTimeout(() => {
 			document.body.style.overflowY = "auto"
-			search_wrapper.parentElement.parentElement.style.display = "none"
-			search_bg.style.display = "none"
+			search.style.display = "none"
+			searchBg.style.display = "none"
 		}, 500);
 	}
 
@@ -517,6 +531,29 @@ function reloadSearchComponents(arr, place) {
 	}
 }
 
+function scrollTop() {	
+	const scrollToTopBtn = document.createElement('button')
+	scrollToTopBtn.classList.add("scroll-top")
+	const arrowTopImg = document.createElement("img")
+	arrowTopImg.src = "/arrow-top.svg"
+	scrollToTopBtn.append(arrowTopImg)
+	header.append(scrollToTopBtn)
+	
+	window.addEventListener("scroll", () => {
+		if (window.scrollY > 400) {
+			scrollToTopBtn.classList.add("active");
+		} else {
+			scrollToTopBtn.classList.remove("active");
+		}
+	});
+	
+	scrollToTopBtn.addEventListener("click", () => {
+		window.scrollTo({
+			top: 0,
+			behavior: "smooth",
+		});
+	});
+}
 
 
 
@@ -568,22 +605,3 @@ confirm_btn.onclick = () => {
 		})
 }
 
-
-if (user_auth) {
-	fetch(`https://api.themoviedb.org/3/account/${user_auth?.account_id}`, {
-		headers: {
-			Authorization: `Bearer ${AUTH_KEY}`,
-			'Content-Type': "application/json"
-		},
-	})
-		.then(res => res.json())
-		.then(res => {
-			localStorage.setItem('user_data', JSON.stringify(res))
-			login_btn.style.display = "none"
-			loged.style.display = "flex"
-			user_foto.src = `https://www.gravatar.com/avatar/${res.avatar.gravatar.hash}`
-			user_name.innerHTML = res.name
-		})
-} else {
-	login_btn.style.display = "block"
-}
