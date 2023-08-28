@@ -34,22 +34,27 @@ function reloadSwiper() {
 			type: "fraction",
 		},
 		breakpoints: {
-			360: {
-				spaceBetween: 10,
+			100: {
+				spaceBetween: 5,
 				slidesPerView: 1,
 				slidesPerGroup: 1,
+			},
+			300: {
+				spaceBetween: 10,
+				slidesPerView: 2,
+				slidesPerGroup: 2,
 			},
 			458: {
 				slidesPerGroup: 2,
 				slidesPerView: 2,
 				spaceBetween: 15,
 			},
-			800: {
+			650: {
 				slidesPerView: 3,
 				slidesPerGroup: 3,
 				spaceBetween: 15,
 			},
-			1100: {
+			900: {
 				slidesPerView: 4,
 				slidesPerGroup: 4,
 				spaceBetween: 20,
@@ -89,10 +94,15 @@ getData(`/movie/upcoming?api_key=${API_KEY}&language=ru-RU`)
 				type: "fraction",
 			},
 			breakpoints: {
-				360: {
-					spaceBetween: 10,
+				100: {
+					spaceBetween: 5,
 					slidesPerView: 1,
 					slidesPerGroup: 1,
+				},
+				300: {
+					spaceBetween: 10,
+					slidesPerView: 2,
+					slidesPerGroup: 2,
 				},
 				450: {
 					slidesPerGroup: 2,
@@ -104,7 +114,7 @@ getData(`/movie/upcoming?api_key=${API_KEY}&language=ru-RU`)
 					slidesPerGroup: 3,
 					spaceBetween: 15,
 				},
-				1100: {
+				900: {
 					slidesPerView: 4,
 					slidesPerGroup: 4,
 					spaceBetween: 20,

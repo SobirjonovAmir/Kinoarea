@@ -6,8 +6,7 @@ reloadHeader(header)
 reloadEmailing(footer)
 
 const search_wrapper = document.querySelector(".search-wrapper")
-const search_form = document.forms.search
-const search_input = search_form.querySelector("input")
+const search_container = document.querySelector(".search-container")
 const form = document.querySelector('form');
 const search_bg = document.querySelector(".search-bg")
 const loged = document.querySelector(".loged")
@@ -49,10 +48,16 @@ function reloadHeader(place) {
 
 	leftSearchIcon.src = "/public/search.svg";
 	leftSearchIcon.alt = "search";
+
 	leftSearchBtn.onclick = () => {
-		search_wrapper.parentElement.parentElement.style.display = "block"
+		search_container.parentElement.style.display = "block"
 		search_bg.style.display = "block"
+		search_bg.classList.remove("close")
+		search_bg.classList.add("active")
 		document.body.style.overflowY = "hidden"
+		setTimeout(() => {
+			search_container.classList.add("active")
+		}, 100);
 	}
 
 	leftSearchBtn.classList.add('left-search__button')
@@ -206,10 +211,16 @@ function reloadHeader(place) {
 	confirmButton.textContent = "Подтвердить";
 	searchIcon.src = "/public/search.svg";
 	searchIcon.alt = "search";
+
 	searchButton.onclick = () => {
-		search_wrapper.parentElement.parentElement.style.display = "block"
+		search_container.parentElement.style.display = "block"
 		search_bg.style.display = "block"
+		search_bg.classList.remove("close")
+		search_bg.classList.add("active")
 		document.body.style.overflowY = "hidden"
+		setTimeout(() => {
+			search_container.classList.add("active")
+		}, 100);
 	}
 
 
@@ -380,7 +391,7 @@ function searchReload(place) {
 					if (results.length !== 0) {
 						reloadSearchComponents(results, search_wrapper)
 					} else {
-						search_wrapper.innerHTML = "Ничего не нашлось"
+						search_wrapper.innerHTML = "По вашему запросу ничего не найдено"
 					}
 					e.target.reset()
 				})
@@ -433,9 +444,14 @@ function searchReload(place) {
 
 	closeButton.onclick = () => {
 		search_wrapper.innerHTML = ""
-		document.body.style.overflowY = "auto"
-		search_wrapper.parentElement.parentElement.style.display = "none"
-		search_bg.style.display = "none"
+		search_container.classList.remove("active")
+		search_bg.classList.remove("active")
+		search_bg.classList.add("close")
+		setTimeout(() => {
+			document.body.style.overflowY = "auto"
+			search_wrapper.parentElement.parentElement.style.display = "none"
+			search_bg.style.display = "none"
+		}, 500);
 	}
 
 	let closeIcon = document.createElement("img");

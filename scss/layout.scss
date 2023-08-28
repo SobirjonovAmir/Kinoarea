@@ -326,16 +326,18 @@
     margin-top: 30px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     z-index: 124;
     width: 100%;
     .form-top {
-      display: flex;
+      width: 50%;
+      display: grid;
+      grid-template-columns: 1fr 150px;
       align-items: center;
       justify-content: center;
       gap: 8px;
       input[type="email"] {
         transition: all 0.2s ease;
-        width: 50%;
         border-radius: 10px;
         background: #fff;
         padding: 10px 25px;
@@ -375,20 +377,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 5px;
-
       .custom-checkbox input[type="checkbox"] {
-        position: absolute;
         opacity: 0;
         cursor: pointer;
       }
 
       .custom-checkbox {
-        position: relative;
-        margin-top: -8px;
-        padding-left: 20px;
-        display: inline-block;
-        vertical-align: middle;
+        position: absolute;
+        left: 0px;
+        margin-top: 10px;
         cursor: pointer;
       }
 
@@ -427,6 +424,8 @@
       }
 
       p {
+        margin-left: 20px;
+        width: fit-content;
         color: #fff;
         text-align: center;
         font-size: 17px;
@@ -490,7 +489,7 @@ footer {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 13px;
+      gap: 5px;
       transition: all 0.3s ease;
       list-style: none;
       a {
@@ -536,15 +535,20 @@ footer {
   position: absolute;
   display: none;
   z-index: 1000;
-  top: -10px;
-  left: -10px;
-  bottom: -10px;
-  right: -10px;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
   z-index: 500;
-  width: 120vw;
-  height: 110vh;
+  width: 100%;
+  height: 100%;
   background: #000000c1;
-  filter: blur(10px);
+  &.active {
+    animation: fade-in 1s ease;
+  }
+  &.close {
+    animation: fade-out .5s ease;
+  }
 }
 .search {
   user-select: none;
@@ -556,14 +560,22 @@ footer {
   height: 100vh;
   width: 100vw;
   margin: 0 auto;
+  transition: 0.3s ease;
 
   .search-container {
+    padding: 0 50px;
+    transition: 0.7s ease;
+    transform: translateY(-50%);
     max-width: 600px;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
+    &.active {
+      transition-delay: 100ms;
+      transform: translateY(0);
+    }
     img {
       width: 130px;
       margin: 20px 0;
@@ -747,10 +759,38 @@ footer {
     }
   }
   .footer-navigation {
-    
     .navigation__list {
-    flex-direction: column;
-    gap: 20px;
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+}
+@media (max-width: 700px) {
+  .container {
+    padding: 0 25px;
+  }
+  .header {
+    .menu {
+      button:first-child {
+        display: flex !important;
+      }
+    }
+    &__bottom {
+      display: none;
+    }
+  }
+  .footer-navigation {
+    .navigation__list {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+  .mailing-list {
+    form {
+      .form-top {
+        width: 80%;
+        grid-template-columns: 1fr;
+      }
     }
   }
 }

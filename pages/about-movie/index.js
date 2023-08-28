@@ -464,7 +464,6 @@ add_to_favourite.onclick = () => {
 		localStorage.setItem("movies", JSON.stringify([movieId]))
 		add_to_favourite.classList.add("active")
 		favourite_count.innerHTML++
-
 	}
 }
 
