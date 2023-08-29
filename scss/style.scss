@@ -1401,6 +1401,9 @@ main {
   }
 }
 @media (max-width: 500px) {
+  .container {
+    padding: 0 10px;
+  }
   main {
     margin-top: 15px;
   }
