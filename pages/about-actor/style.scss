@@ -976,6 +976,9 @@ img {
   }
 }
 @media (max-width: 500px) {
+  .container {
+    padding: 0 10px;
+  }
   .anticipated-movies {
     &__header {
       h2 {
