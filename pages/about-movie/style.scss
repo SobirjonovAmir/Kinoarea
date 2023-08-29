@@ -1006,12 +1006,10 @@ img {
           transition-delay: opacity 0.4s;
         }
         animation: fade-in 700ms ease-in;
-
-        &:hover .item-banner__bg {
-          animation: fade-in 700ms ease-in;
-          opacity: 1;
+        &:hover .item-about {
+          animation: fade-in 1000ms ease-out;
+          transition-delay: all 0.4s;
           visibility: visible;
-          transition-delay: opacity 0.4s;
         }
         &__bg {
           overflow: hidden;
@@ -1025,12 +1023,6 @@ img {
           opacity: 0;
           visibility: hidden;
           transition: opacity 0.6s, visibility 0.5s;
-
-          &:hover .item-about {
-            animation: fade-in 1000ms ease-out;
-            transition-delay: all 0.4s;
-            visibility: visible;
-          }
         }
         .item-about {
           visibility: hidden;
@@ -1296,7 +1288,7 @@ img {
         justify-content: center;
         align-items: center;
         .movie-title {
-        text-align: center;
+          text-align: center;
           margin-top: 5px;
           color: #fff;
           font-size: 40px;
@@ -1314,7 +1306,7 @@ img {
           font-weight: 500;
         }
         .movie-description {
-        text-align: center;
+          text-align: center;
           height: auto;
           overflow: hidden;
           line-height: 166.5%;
@@ -1541,7 +1533,7 @@ img {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
           gap: 10px;
-  
+
           span {
             text-transform: capitalize;
             display: block;

@@ -1,6 +1,5 @@
 @import url("/fonts/stylesheet.css");
 
-
 * {
   padding: 0;
   margin: 0;
@@ -174,6 +173,11 @@ main {
         visibility: visible;
         transition-delay: opacity 0.4s;
       }
+      &:hover .item-about {
+        animation: fade-in 1000ms ease-out;
+        transition-delay: all 0.4s;
+        visibility: visible;
+      }
       animation: fade-in 700ms ease-in;
 
       &__bg {
@@ -187,12 +191,6 @@ main {
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.7s, visibility 0.5s;
-
-        &:hover .item-about {
-          animation: fade-in 1000ms ease-out;
-          transition-delay: all 0.4s;
-          visibility: visible;
-        }
       }
     }
     .item-about {
@@ -703,12 +701,10 @@ main {
           transition-delay: opacity 0.4s;
         }
         animation: fade-in 700ms ease-in;
-
-        &:hover .item-banner__bg {
-          animation: fade-in 700ms ease-in;
-          opacity: 1;
+        &:hover .item-about {
+          animation: fade-in 1000ms ease-out;
+          transition-delay: all 0.4s;
           visibility: visible;
-          transition-delay: opacity 0.4s;
         }
         &__bg {
           overflow: hidden;
@@ -722,12 +718,6 @@ main {
           opacity: 0;
           visibility: hidden;
           transition: opacity 0.6s, visibility 0.5s;
-
-          &:hover .item-about {
-            animation: fade-in 1000ms ease-out;
-            transition-delay: all 0.4s;
-            visibility: visible;
-          }
         }
         .item-about {
           visibility: hidden;
@@ -1102,12 +1092,10 @@ main {
           transition-delay: opacity 0.4s;
         }
         animation: fade-in 700ms ease-in;
-
-        &:hover .item-banner__bg {
-          animation: fade-in 700ms ease-in;
-          opacity: 1;
+        &:hover .item-about {
+          animation: fade-in 1000ms ease-out;
+          transition-delay: all 0.4s;
           visibility: visible;
-          transition-delay: opacity 0.4s;
         }
         &__bg {
           overflow: hidden;
@@ -1121,12 +1109,7 @@ main {
           opacity: 0;
           visibility: hidden;
           transition: opacity 0.6s, visibility 0.5s;
-
-          &:hover .item-about {
-            animation: fade-in 1000ms ease-out;
-            transition-delay: all 0.4s;
-            visibility: visible;
-          }
+          
         }
         .item-about {
           visibility: hidden;
