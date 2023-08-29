@@ -44,7 +44,7 @@ function reloadHeader(place) {
 	headerLeftLogo.className = "header__left-logo";
 	headerLeftSocial.className = "header__left-social";
 
-	leftSearchIcon.src = "/public/search.svg";
+	leftSearchIcon.src = "/search.svg";
 	leftSearchIcon.alt = "search";
 
 	leftSearchBtn.onclick = () => {
@@ -63,7 +63,7 @@ function reloadHeader(place) {
 	leftSearchBtn.append(leftSearchIcon)
 	logoLink.href = "/";
 
-	logoImg.src = "/public/logo.svg";
+	logoImg.src = "/logo.svg";
 	logoImg.alt = "Kinoarea-logo";
 	logoLink.appendChild(logoImg);
 	headerLeftLogo.appendChild(logoLink);
@@ -71,10 +71,10 @@ function reloadHeader(place) {
 
 
 	let socialIcons = [
-		"/public/vk-logo.svg",
-		"/public/instagram-logo.svg",
-		"/public/facebook.svg",
-		"/public/twitter.svg"
+		"/vk-logo.svg",
+		"/instagram-logo.svg",
+		"/facebook.svg",
+		"/twitter.svg"
 	];
 
 	for (let iconSrc of socialIcons) {
@@ -163,7 +163,7 @@ function reloadHeader(place) {
 	const divUserFoto = document.createElement('div');
 	const img = document.createElement('img');
 
-	
+
 	divUserFoto.onclick = () => {
 		location.assign(`/pages/profile/`)
 	}
@@ -207,7 +207,7 @@ function reloadHeader(place) {
 	confirmButton.className = "header__right-confirm button";
 	loginSpan.textContent = "Войти";
 	confirmButton.textContent = "Подтвердить";
-	searchIcon.src = "/public/search.svg";
+	searchIcon.src = "/search.svg";
 	searchIcon.alt = "search";
 
 	searchButton.onclick = () => {
@@ -303,7 +303,7 @@ function reloadEmailing(place) {
 	privacyCheckbox.name = "checkbox"
 	mailingForm.name = "mailing_form"
 	mailingForm.action = '';
-	mailingLogoImage.src = '/public/mailing-logo.svg';
+	mailingLogoImage.src = '/mailing-logo.svg';
 	mailingLogoImage.alt = 'Kinoarea';
 	emailInput.placeholder = 'Введите свой E-mail адрес';
 	emailInput.type = 'email';
@@ -335,11 +335,11 @@ function reloadEmailing(place) {
 	socialList.className = 'social-list';
 
 	const socialLinksData = [
-		{ href: '#', src: '/public/vk-logo.svg', alt: 'vk' },
-		{ href: '#', src: '/public/instagram-logo.svg', alt: 'instagram' },
-		{ href: '#', src: '/public/facebook.svg', alt: 'facebook' },
-		{ href: '#', src: '/public/twitter.svg', alt: 'twitter' },
-		{ href: '#', src: '/public/youtube-logo.svg', alt: 'youtube' }
+		{ href: '#', src: '/vk-logo.svg', alt: 'vk' },
+		{ href: '#', src: '/instagram-logo.svg', alt: 'instagram' },
+		{ href: '#', src: '/facebook.svg', alt: 'facebook' },
+		{ href: '#', src: '/twitter.svg', alt: 'twitter' },
+		{ href: '#', src: '/youtube-logo.svg', alt: 'youtube' }
 	];
 
 	socialLinksData.forEach(linkData => {
@@ -516,12 +516,20 @@ function reloadSearchComponents(arr, place) {
 					all_genres.title = finded.join(", ")
 				}
 			})
-
 		title.innerHTML = item.name ? item.name : item.title
 		orig_title.innerHTML = item.original_name ? item.original_name : item.original_title
 		rating.innerHTML = item.vote_average ? (+item.vote_average).toFixed(2) : (+item.popularity).toFixed(2)
-		img.src = item.poster_path ? `https://image.tmdb.org/t/p/original${item.poster_path}` : `/public/default-poster.svg`
 
+		if (item.poster_path) {
+			img.src = `https://image.tmdb.org/t/p/original${item.poster_path}`
+		} else if (item.profile_path) {
+			img.src = `https://image.tmdb.org/t/p/original${item.profile_path}`
+		} else {
+			img.src = `/public/default-poster.svg`
+		}
+
+
+		console.log(item);
 		div.onclick = () => {
 			window.open("/pages/about-movie/?id=" + item.id, '_blank')
 		}

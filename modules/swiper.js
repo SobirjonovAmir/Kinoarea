@@ -23,7 +23,6 @@ function reloadSwiper() {
 		spaceBetween: 20,
 		grabCursor: true,
 
-
 		touchRatio: 1,
 		navigation: {
 			nextEl: ".swiper-button-next",
@@ -71,7 +70,6 @@ function reloadSwiper() {
 		popular_movies_swipe: popular_movies_swipe
 	};
 }
-
 
 getData(`/movie/upcoming?api_key=${API_KEY}&language=ru-RU`)
 	.then(res => {
