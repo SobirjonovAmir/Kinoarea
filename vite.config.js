@@ -9,8 +9,10 @@ export default defineConfig({
 	build: {
 		rollupOptions: {
 			input: {
-				kinoarea: resolve(__dirname, 'index.html'),
+				main: resolve(__dirname, 'index.html'),
 				profile: resolve(__dirname, 'pages/profile/index.html'),
+				"about-movie": resolve(__dirname, 'pages/about-actor/index.html'),
+				"about-actor": resolve(__dirname, 'pages/about-movie/index.html'),
 			},
 		},
 	},
